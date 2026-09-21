@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Что мы делаем — Whoopy</title>
+<meta name="description" content="Три вещи, и вводим их по очереди. Начать можно с одной.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500&family=PT+Mono&display=swap" rel="stylesheet">
+<!-- Макет на тестовом адресе, 22.09.2026. Текст — «Три продукта.md» главы
+     маркетинга, финал 20.09 с правками Саши 21.09.
+
+     Карточка устроена от боли, а не от вещи: первая крупная строка —
+     слова владельца, имя продукта стоит мелкой меткой над ней. Порядок
+     блоков внутри (в начале → как вводим → что это → что нужно от вас)
+     менять нельзя: «Что это» ниже нарочно.
+
+     Блоки — та же строка описи, что на страницах продуктов
+     (<ul><li><b>ключ</b><span>значение</span>), новых форм нет.
+     Своя здесь только рамка карточки и бейдж «скоро».
+
+     Кнопок, форм и цен нет: ноль CTA, решение компании 08.08.
+
+     Плашка мозга — отдельный <section class="prod soon">, ни на что
+     не ссылается и ничем не держится: её можно снять целиком, страница
+     останется целой (слово Саши 21.09: «не факт, что будем делать»). -->
+<link rel="stylesheet" href="page.css">
+<style>
+.page > .lead{color:var(--grey);font-size:19px}
+.page > .prod{
+  max-width:720px;margin:calc(var(--u)*5) auto 0;
+  padding:calc(var(--u)*4) calc(var(--u)*5) calc(var(--u)*2);
+  border:1px solid var(--line);border-radius:var(--r);background:var(--card);
+  box-shadow:var(--sh);
+}
+.page > .prod:first-of-type{margin-top:calc(var(--u)*7)}
+.prod .name{display:flex;align-items:center;gap:calc(var(--u)*1.5);
+  font-family:'PT Mono',monospace;font-size:13px;color:var(--grey);margin-bottom:calc(var(--u)*2)}
+.prod .name b{font-family:'Onest',sans-serif;font-size:15px;font-weight:500;color:var(--ink)}
+.page .prod p.pain{font-size:clamp(20px,2.4vw,23px);line-height:1.4;letter-spacing:-.01em;
+  margin-bottom:calc(var(--u)*3)}
+.prod .pain i{font-style:italic}
+.prod .pain .or{display:block;margin-top:calc(var(--u)*1.25);font-size:17px;color:var(--grey);font-style:normal}
+.prod ul{margin-bottom:calc(var(--u)*2)}
+.prod li:last-child{border-bottom:0}
+/* Плашка «скоро»: тот же пунктир, каким главная показывает незанятое
+   место (.thing.pending), без тени — вещь ещё не стоит на странице */
+.page > .prod.soon{border-style:dashed;box-shadow:none;background:transparent;
+  padding-bottom:calc(var(--u)*4)}
+.prod .badge{font-family:'PT Mono',monospace;font-size:11px;letter-spacing:.04em;
+  color:var(--grey);border:1px solid var(--line);border-radius:var(--r-s);padding:2px 8px}
+.page .prod.soon p{margin-bottom:0;font-size:17px;line-height:1.55}
+@media (max-width:640px){
+  .page > .prod{padding:calc(var(--u)*3) calc(var(--u)*2.5) calc(var(--u)*1)}
+  .page > .prod.soon{padding-bottom:calc(var(--u)*3)}
+  .prod li{grid-template-columns:1fr;gap:calc(var(--u)*.75)}
+}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-in">
+    <a class="back" href="index.html">← ко всему</a>
+  </div>
+</div>
+
+<article class="page tone-blue">
+  <div class="kind">Продукты</div>
+  <h1>Что мы делаем</h1>
+  <p class="lead">Три вещи, и&nbsp;вводим их&nbsp;по&nbsp;очереди. Начать можно с&nbsp;одной.</p>
+
+  <section class="prod" id="agent">
+    <div class="name"><span>01</span><b>Агент</b></div>
+    <p class="pain"><i>«Клиент написал в&nbsp;одиннадцать вечера, ответили утром&nbsp;— а&nbsp;он уже записался к&nbsp;соседям».</i><span class="or">Или так: про ИИ слышали, попробовать хочется, а&nbsp;с&nbsp;чего начать&nbsp;— непонятно.</span></p>
+    <ul>
+      <li><b>Что делаем в&nbsp;начале</b><span>Выбираем за&nbsp;вас одно дело&nbsp;— то, где уходит больше всего часов или теряются клиенты. Разбираем его целиком: откуда приходят заявки, что вы отвечаете, куда записываете. Собираем агента и&nbsp;проверяем на&nbsp;ваших настоящих примерах, пока он не&nbsp;станет отвечать так, как ответили&nbsp;бы вы.</span></li>
+      <li><b>Как вводим</b><span>Агент работает сам, без человека рядом: отвечает сразу, в&nbsp;одиннадцать вечера тоже, и&nbsp;доводит дело до&nbsp;конца. Это не&nbsp;обещание&nbsp;— так наш агент уже работает у&nbsp;пекаря. Первые дни вы смотрите за&nbsp;его ответами и&nbsp;говорите нам, что поправить. На&nbsp;этом можно остановиться: агент просто продолжит работать.</span></li>
+      <li><b>Что это</b><span>Агент берёт на&nbsp;себя одно дело и&nbsp;делает его каждый день. Например, отвечает на&nbsp;заявки сразу и&nbsp;доводит их&nbsp;до&nbsp;записи или до&nbsp;вашего человека.</span></li>
+      <li><b>Что нужно от&nbsp;вас</b><span>Час разговора, доступ туда, куда приходят заявки, и&nbsp;человек, который первые дни смотрит за&nbsp;ответами.</span></li>
+    </ul>
+  </section>
+
+  <section class="prod" id="specialist">
+    <div class="name"><span>02</span><b>ИИ-специалист</b></div>
+    <p class="pain"><i>«Администратор ушёл через четыре месяца. Нового учу заново, а&nbsp;пока учу&nbsp;— всё на&nbsp;мне».</i></p>
+    <ul>
+      <li><b>Что делаем в&nbsp;начале</b><span>Выбираем с&nbsp;вами участок, где люди меняются чаще всего, и&nbsp;описываем его так, как объяснили&nbsp;бы новичку: что он делает за&nbsp;день, у&nbsp;кого спрашивает, где ошибиться нельзя. Проверяем специалиста на&nbsp;ваших примерах рядом с&nbsp;тем, кто сейчас на&nbsp;этом месте, или рядом с&nbsp;вами.</span></li>
+      <li><b>Как вводим</b><span>Участок передаём по&nbsp;частям, и&nbsp;каждую часть специалист ведёт сам, без человека рядом: он встаёт на&nbsp;место сотрудника, а&nbsp;не&nbsp;помогает ему. Так специалисты работают у&nbsp;нас в&nbsp;Whoopy&nbsp;— ведут проекты и&nbsp;работают в&nbsp;команде. Следующую часть передаём, когда предыдущая работает, и&nbsp;только если вы этого хотите. Остановиться можно на&nbsp;любой части.</span></li>
+      <li><b>Что это</b><span>Специалист встаёт на&nbsp;место сотрудника и&nbsp;ведёт его участок целиком. Агент отвечает на&nbsp;заявки, а&nbsp;специалист делает всю работу администратора: записи, переносы, напоминания, ответы на&nbsp;вопросы, график смен. Он не&nbsp;уходит в&nbsp;отпуск и&nbsp;не&nbsp;увольняется.</span></li>
+      <li><b>Что нужно от&nbsp;вас</b><span>Описание участка своими словами, доступы к&nbsp;рабочим программам и&nbsp;ответы на&nbsp;вопросы первых недель.</span></li>
+    </ul>
+  </section>
+
+  <section class="prod soon" id="brain">
+    <div class="name"><span>03</span><b>Второй мозг</b><span class="badge">скоро</span></div>
+    <p>Управляющий центр компании: видит дело целиком и&nbsp;ведёт внутреннюю работу&nbsp;— план недели, задачи людям, сроки. Сейчас он работает у&nbsp;нас, в&nbsp;Whoopy, каждый день. Для других компаний мы&nbsp;его готовим.</p>
+  </section>
+
+</article>
+
+</body>
+</html>

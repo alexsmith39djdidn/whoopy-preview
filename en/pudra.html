@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pudra — the orders aren’t taken by a person — Whoopy</title>
+<meta name="description" content="An AI specialist out of the second brain, turned outward to face an artisan patisserie’s customers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500&family=PT+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../page.css">
+</head>
+<body>
+
+<!-- Rebuilt 06.08.2026 to mirror the current Russian pudra.html: client →
+     problem → bot → how this could be useful to you. The old English page
+     (static cover chat, "This is not a bakery bot" pull quote, "What
+     changed" axis, "Why we show this one") is gone — none of that exists
+     in the Russian source anymore. The mailing-bot section (four broadcast
+     types + how it learns from its own broadcasts) is new here; the old
+     English page never had it. -->
+
+<div class="bar">
+  <div class="bar-in">
+    <a class="back" href="index.html">← back</a>
+    <a class="lang" href="../pudra.html" hreflang="ru" lang="ru">RU</a>
+  </div>
+</div>
+
+<article class="page tone-pudra">
+  <div class="kind">Who we built for</div>
+  <h1>At the patisserie, the orders aren’t taken by a person</h1>
+
+  <div class="demo">
+    <div class="grid-bg"></div>
+    <div class="demo-chat" id="demoChat"></div>
+  </div>
+
+  <h2>Client</h2>
+  <p>Artyom Kirilovskiy is a pastry chef and the founder of <a href="https://www.kirilovskiy.ru/" target="_blank" rel="noopener">an artisan patisserie</a> in Moscow. Five years in, his own workshop, a team, supply to cafés and restaurants. His signature piece is sourdough panettone: three days from starter to box, and those three days can’t be rushed.</p>
+
+  <p>Everything about his business already works: a website with a catalogue, delivery across Moscow and the country, production running smoothly. This isn’t someone who "needs automation" — it’s a craftsman with a business that already runs.</p>
+
+  <h2>Problem</h2>
+  <p>The website handles a simple purchase: pick a box, pay, receive it. But an artisan patisserie doesn’t live off a box on a shelf — it lives off conversation. "Will this feed ten people?", "Can you leave out the nuts?", "Do you deliver to Kazan?", "Can you have it ready by Saturday?" A catalogue doesn’t answer questions like these.</p>
+
+  <p>So part of every order was closed by a person — by hand, in chat. And it all came down to that one person: a question would arrive at midnight, the answer came in the morning, and by then the customer had already ordered from whoever answered first.</p>
+
+  <h2>The specialist</h2>
+  <p>We built Pudra for incoming messages — an AI specialist that carries that same conversation through to a paid order. That’s what it looks like — the recording above.</p>
+
+  <div class="belt">
+    <div class="belt-item">
+      <div class="belt-art">
+        <div class="checker"></div>
+        <div class="loop">
+          <div class="msg them">Got anything for tomorrow?</div>
+          <div class="msg us">Yes, ready by 2pm</div>
+          <div class="msg them">How do I pay?</div>
+          <div class="msg us">Sending a QR code</div>
+        </div>
+      </div>
+      <div class="belt-cap">
+        <b>Runs itself</b>
+        <span>Answers, calculates, places the order. Calls the owner in only when it can’t handle something itself.</span>
+      </div>
+    </div>
+
+    <div class="belt-item">
+      <div class="belt-art">
+        <div class="checker"></div>
+        <div class="pay">
+          <div class="pay-row"><b>address</b><span>Moscow, Presnya</span></div>
+          <div class="pay-row"><b>delivery</b><span>courier, Saturday — 490 ₽</span></div>
+          <div class="pay-row"><b>total due</b><span>4,890 ₽</span></div>
+          <div class="qr"></div>
+        </div>
+      </div>
+      <div class="belt-cap">
+        <b>Calculates and takes payment</b>
+        <span>Delivery to the address, a QR code in chat, payment checked — no person involved.</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="demo-note note-hint">Cards expand on hover</p>
+
+  <div class="cards">
+    <div class="card"><div class="card-in">
+      <b>Places the order</b><em>on its own, start to finish</em>
+      <p>Collects the items, the occasion, the date and the address, and writes the order into the patisserie’s database — from there it goes straight into 1C. Not into a chat thread where someone later has to go hunting for it.</p>
+    </div></div><div class="card"><div class="card-in">
+      <b>Calculates delivery</b><em>courier and CDEK</em>
+      <p>Takes the customer’s address and works out the real cost: courier within Moscow or CDEK nationwide. States the time and the price right in the conversation, before the order is placed.</p>
+    </div></div><div class="card"><div class="card-in">
+      <b>Takes payment</b><em>a QR code in chat</em>
+      <p>Sends a QR code for instant bank transfer straight into the chat and checks the payment status itself. No one asks the customer "did you pay?" or checks a bank statement by hand.</p>
+    </div></div><div class="card"><div class="card-in">
+      <b>Updated with plain words</b><em>no admin panel</em>
+      <p>The owner types "Napoleon cake is now 3,200" — and in the very next conversation it quotes the new price. No control panel, no "email the developer."</p>
+    </div></div><div class="card"><div class="card-in">
+      <b>Remembers the customer</b><em>orders and tastes</em>
+      <p>Keeps a history of orders and preferences: what they bought, for what occasion, what didn’t work. A regular customer doesn’t have to explain themselves from scratch every time.</p>
+    </div></div><div class="card"><div class="card-in">
+      <b>Calls in a person</b><em>when it doesn’t know</em>
+      <p>It doesn’t make up an answer. It hands the conversation to a person and leaves them the full thread — no need to work out what was said. Same with failures: a payment doesn’t go through, delivery falls through — the bot writes to the owner itself and asks for help.</p>
+    </div></div></div>
+
+  <h2>The marketing bot</h2>
+  <p>The second specialist faces the other direction — toward people who’ve already bought something. The owner doesn’t build the mailing list by hand or export spreadsheets: they say what they want to say, and the bot helps work out who to send it to and in what words.</p>
+
+  <p>There are four kinds of broadcast, and they form a ladder from "the same message to everyone" to "something different for each person."</p>
+
+  <div class="cards">
+    <div class="card"><div class="card-in">
+      <b>A ready text</b><em>the same for everyone</em>
+      <p>The owner gives the text — it goes out to the whole list as is, a photo included if there’s one. This is a plain announcement: we’ve opened, we’ve moved, we’re working through the holidays.</p>
+    </div></div><div class="card"><div class="card-in">
+      <b>Personalised bulk</b><em>a different letter for each</em>
+      <p>One occasion — "seasonal strawberries" — but each message is written separately: with that person’s tastes, their past orders, their own way of being addressed. One topic, a hundred different letters.</p>
+    </div></div><div class="card"><div class="card-in">
+      <b>Targeted</b><em>only to those it fits</em>
+      <p>The bot picks out who this is worth offering to — "people who order for children’s parties" — and writes only to them. The owner sets how strict the selection is; in a test of five people, three received the letter.</p>
+    </div></div><div class="card"><div class="card-in">
+      <b>Individual offer</b><em>its own discount for each</em>
+      <p>The top step: the bot picks a product from the catalogue for that specific person and builds an offer around them. Not "20% off everything," but "here’s this, for you, and here’s why."</p>
+    </div></div></div>
+
+  <p>Before sending, it shows what the message will look like and how many people will get it. It sends only after approval — never on its own.</p>
+
+  <h2>It learns from its own broadcasts</h2>
+  <p>After sending, the bot comes back and checks what came of it — for every recipient separately. It doesn’t take a purchase on faith: it checks the orders that came in during the three days after the message and ties them back to it.</p>
+
+  <div class="steps">
+    <div class="step"><b>1 · Sent</b>The campaign went out, each recipient gets their own line</div>
+    <div class="step"><b>2 · Watched</b>Who replied, who bought, who stayed silent, who got annoyed</div>
+    <div class="step"><b>3 · Wrote down the lesson</b>And the next message is written with it in mind</div>
+  </div>
+
+  <p>Here’s what it worked out on its own, word for word — nobody wrote it these rules:</p>
+
+  <ul>
+    <li><b>on price</b><span>Showing "was / now" heads off the "too expensive" objection before it’s even raised</span></li>
+    <li><b>on the product</b><span>State the weight, the filling and the shelf life right in the message, without waiting to be asked</span></li>
+    <li><b>on people</b><span>Leave out of the next broadcast anyone who’s complained before about getting too many messages</span></li>
+    <li><b>on discounts</b><span>Tie a discount to the person’s own occasion date, not to the end of the week</span></li>
+  </ul>
+
+  <p>The lessons build up separately for each kind of broadcast: the first one is already on its twenty-third revision.</p>
+
+  <h2>How this could be useful to you</h2>
+  <p>If your business lives on conversation — questions in chat, clarifications, "could you do it like this" — you probably already know what happens next: you need to answer fast, and there’s only one of you. The specialist takes that conversation on and carries it through to a paid order, bringing you in only where it genuinely needs you. It doesn’t have to be a patisserie: a custom-order craftsperson, a salon booking appointments, a tailor fitting a dress — all of them have to talk a customer into a purchase too.</p>
+
+  <div class="end">
+    <a class="door" href="https://t.me/mr_nobode" target="_blank" rel="noopener">I want one of these</a>
+  </div>
+</article>
+
+<script src="demo-pudra.js"></script>
+</body>
+</html>

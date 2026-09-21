@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<script>document.documentElement.classList.add('js')</script>
+<!-- Класс js ставится до отрисовки: всё, что появляется вылетом (.rev),
+     прячется ТОЛЬКО когда скрипты работают. Без него страница отдаётся
+     обычной статикой — весь текст на месте, просто без анимации.
+     Заведено 06.08.2026: судья-«самоделка» нашёл, что .rev держал
+     opacity:0 безусловно, и при любом сбое page.js/home.js (сеть,
+     блокировщик, ошибка в скрипте) страница оставалась пустой навсегда. -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Whoopy — the second brain of a company</title>
+<meta name="description" content="A second brain is the control centre of a company. We built the first one for ourselves — Whoopy has been run by it since June 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Onest подрезан до двух весов: 300 и 600 были подключены, но в вёрстке
+     нигде не используются — только 400 и 500. Плюс заведён PT Mono.
+     Служебный моноширинный до этого был системным (ui-monospace → SF Mono
+     на Mac, Consolas на Windows, что попало на Linux), а в нём у нас стоит
+     не только цифра, но и КИРИЛЛИЦА: «44 файла своей памяти». То есть на
+     чужой машине эта строка набиралась бы неизвестно чем. PT Mono — тот же
+     дом, что Onest по духу (ParaType, кириллица спроектирована, а не
+     дорисована), один вес, 16 КБ на оба алфавита. -->
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500&family=PT+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../home.css">
+</head>
+<body>
+
+<!-- ── Плашка ───────────────────────────────────────────── -->
+<div class="bar" id="bar">
+  <div class="bar-in">
+    <a class="brand" href="#top">Whoopy</a>
+
+    <nav class="nav">
+      <a class="lang" href="../index.html" hreflang="ru" lang="ru">RU</a>
+      <!-- ⚠️ href подставить: прямая ссылка на Сашу -->
+      <a class="write" href="https://t.me/mr_nobode" target="_blank" rel="noopener">Get in touch</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ── Оглавление точками ───────────────────────────────── -->
+<nav class="dots" id="dots">
+  <a href="#top" data-t="Start"></a>
+  <a href="#made" data-t="What we built"></a>
+  <a href="#social" data-t="Where we are"></a>
+  <a href="#clients" data-t="Who we built for"></a>
+  <a href="#about" data-t="What we do"></a>
+  <a href="#write" data-t="Get in touch"></a>
+</nav>
+
+<!-- ── Первый экран ─────────────────────────────────────── -->
+<header class="hero" id="top">
+  <div class="orbs" aria-hidden="true"><span class="orb o1"></span><span class="orb o2"></span><span class="orb o3"></span><span class="orb o4"></span></div>
+  <h1>This company<br><span class="lockline">is run by <span class="swap" id="swap" data-words="a second brain|AI"><span class="hold">a second brain</span><span class="live" id="swapLive">a second brain</span></span></span></h1>
+  <!-- Вторая фраза была «У Whoopy он ведёт в том числе эту страницу».
+       Снята 03.08.2026: та же болезнь, что и остальные отсылки, — страница
+       говорит про саму себя. Здесь это к тому же самая слабая позиция:
+       человек на первом экране ещё не знает, что мы предлагаем, а мы уже
+       тратим половину подзаголовка на факт о сайте. -->
+  <p class="lead">A second brain is the control centre of a company: memory, tasks, projects, departments.</p>
+  <div class="scroll-hint"></div>
+</header>
+
+<!-- ── Что сделали · Boofy ──────────────────────────────── -->
+<section class="sec made" id="made">
+  <div class="wrap">
+    <div class="head rev">
+      <h2>What we’ve built</h2>
+      <!-- было «свои разработки — каждую можно открыть и почитать, как это
+           было»: множественное число осталось от трёх карточек, а карточка
+           теперь одна — подзаголовок обещал больше, чем показывает раздел -->
+      <span class="sub">our own build — you can open it and see how it works inside</span>
+    </div>
+
+    <div class="row">
+
+      <a class="thing rev" style="--d:.05s" href="brain.html">
+        <div class="shot big">
+          <div class="grid-bg"></div>
+          <div class="dia">
+            <div class="d-core">Lead specialist<span>runs the company as a whole: the plan, the money, the tasks for everyone else</span><em class="mem dark">44 files of its own memory</em></div>
+            <div class="d-fork"></div>
+            <div class="d-row">
+              <!-- было «тексты, соцсети, эта страница» — последняя отсылка
+                   страницы к самой себе. Приём сильный, но правило Саши от
+                   03.08 общее, и он снял такую же фразу с первого экрана -->
+              <div class="d-c on">Marketing<u>copy, social, the website</u><em class="mem">88 memory files</em><i>running</i></div>
+              <div class="d-c on">Automation<u>bots and the wiring between systems</u><em class="mem">45 memory files</em><i>running</i></div>
+              <!-- Было «спеца пока нет» — и это дважды лишнее: состояние уже
+                   сказано двумя другими метками той же ячейки (0 файлов и
+                   «каркас»), а слово «пока» превращало метку в оправдание.
+                   Теперь строка описывает ЗОНУ отдела, как у работающих
+                   соседей, а пустоту показывают число и метка. -->
+              <div class="d-c off">Accounting<u>money and reporting</u><em class="mem">0 memory files</em><i>shell</i></div>
+              <div class="d-c off">Legal<u>contracts and risk</u><em class="mem">0 memory files</em><i>shell</i></div>
+            </div>
+            <!-- Блок .d-out снят 05.08.2026 следом за русской версией: там его
+                 убрал Саша по аудиту, и вместе с ним ушли правила .d-out/.d-ext
+                 из home.css. Оставить разметку здесь значило бы держать на
+                 английской главной блок без единого стиля.
+                 ⚠️ Это не перенос правок дня — тексты EN намеренно отстают до
+                 приёмки. Это починка того, что я сломала сама, снеся CSS. -->
+          </div>
+        </div>
+        <div class="cap">
+          <h3>Whoopy’s second brain — departments with no employees</h3>
+          <!-- Строка «работает с июня 2026» снята 04.08.2026: карточка
+               держала четыре ряда текста вместо трёх, хозяин назвал это
+               «многовато». Факт не потерян — он и так стоит в абзаце ниже
+               («копится с июня»), .st тут был просто вторым способом
+               сказать то же самое -->
+          <p class="desc">It steps in where we’re not strong, handles the content, and works through ideas — so we focus only on what we’re good at: AI itself.</p>
+          <!-- Аудитор доверия: ссылка тут была с самого начала — вся карточка
+               ведёт в разбор, — но глазом это не читалось. У соседней карточки
+               Пудры под подписью стоит видимая строка «открыть переписку целиком»,
+               а у главной, на которой держатся все проверяемые числа, не было
+               ничего: дверь была неотличима от стены. Тот же приём, что рядом -->
+          <p class="more">read the full breakdown</p>
+        </div>
+      </a>
+
+      <!-- Здесь стоял блок .side: карточки «Робот» и «Мир в Minecraft»,
+           двумя колонками под главной схемой. Сняты 04.08.2026 по слову
+           Саши — «их мы пока убираем, так как их пока мы не сделали».
+           Раздел называется «Что сделали», и держать в нём две вещи без
+           результата — ровно то, за что покупатель уже ловил эту страницу
+           («ребята распыляются, не сфокусированы»).
+           Страницы robot.html и minecraft.html НЕ удалены — лежат рядом,
+           просто без ссылок. Разметка карточек сохранена целиком в
+           «Кадры 0.11/index-до-снятия-робота-и-minecraft.html», как их
+           вернуть — в моей памяти, Отложенные/робот-и-minecraft-на-сайт.md -->
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Мы в соцсетях · Lumi ─────────────────────────────── -->
+<!-- ⚠️ Саша: здесь стоят макеты каналов, а не снимки. Настоящие скриншоты
+     встанут на это место, когда каналы оживут — под них уже готово. -->
+<section class="sec social" id="social">
+  <div class="wrap">
+    <div class="head rev">
+      <!-- подзаголовок снят: «четыре площадки, у каждой своя работа» —
+           ровно то, что и так видно по четырём карточкам ниже.
+           Заголовок был «Где нас можно будет читать» — будущее время прямо
+           перед разделом с клиентами читалось как признание, что нас нигде
+           нет. «Где мы» — то, как хозяин сам назвал этот блок -->
+      <h2>Where we are</h2>
+    </div>
+
+    <div class="four">
+
+      <div class="thing rev" style="--d:.05s">
+        <div class="shot">
+          <div class="grid-bg"></div>
+          <div class="chan">
+            <div class="chan-top">
+              <span class="chan-ava">
+                <svg viewBox="0 0 32 32" aria-hidden="true">
+                  <path d="M4 16l24-9-4 22-8-6-4 5-1-8z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="chan-name">Telegram</span>
+            </div>
+            <div class="chan-body">
+              <ul class="plan">
+                <li>a record of the work as it happens — including what breaks</li>
+              </ul>
+            </div>
+            <div class="chan-state">Main channel<em>our primary home</em></div>
+          </div>
+        </div>
+        <!-- Дата под названием снята: хозяин сказал, что тут в будущем
+             встанет число подписчиков, а пока подпись — просто заголовок -->
+        <div class="cap">
+          <h3>The company channel</h3>
+        </div>
+      </div>
+
+      <div class="thing rev" style="--d:.12s">
+        <div class="shot">
+          <div class="grid-bg"></div>
+          <div class="chan">
+            <div class="chan-top">
+              <span class="chan-ava">
+                <svg viewBox="0 0 32 32" aria-hidden="true">
+                  <rect x="3" y="7" width="26" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2.2"/>
+                  <path d="M14 12l7 4-7 4z" fill="currentColor"/>
+                </svg>
+              </span>
+              <span class="chan-name">YouTube</span>
+            </div>
+            <div class="chan-body">
+              <ul class="plan">
+                <li>how a brain gets built — start to finish, no cuts to «and here it is»</li>
+              </ul>
+            </div>
+            <div class="chan-state">Long form<em>first film — about Pudra</em></div>
+          </div>
+        </div>
+        <div class="cap">
+          <h3>Full breakdowns</h3>
+        </div>
+      </div>
+
+      <div class="thing rev" style="--d:.19s">
+        <div class="shot">
+          <div class="grid-bg"></div>
+          <div class="chan">
+            <div class="chan-top">
+              <span class="chan-ava">
+                <svg viewBox="0 0 32 32" aria-hidden="true">
+                  <rect x="5" y="5" width="22" height="22" rx="7" fill="none" stroke="currentColor" stroke-width="2.2"/>
+                  <circle cx="16" cy="16" r="5.6" fill="none" stroke="currentColor" stroke-width="2.2"/>
+                  <circle cx="23" cy="9" r="1.6" fill="currentColor"/>
+                </svg>
+              </span>
+              <span class="chan-name">Instagram</span>
+            </div>
+            <div class="chan-body">
+              <ul class="plan">
+                <li>short and alive — no long breakdowns here</li>
+              </ul>
+            </div>
+            <!-- Была одна карточка на профиль Саши — хозяин сказал, что
+                 будет ещё инстаграм самой компании. Пятую карточку не
+                 заводим: сетка .four держит ровно четыре, и этот раздел мы
+                 только что ужимали, чтобы влезал в экран целиком. Вместо
+                 этого одна площадка показывает оба профиля: Саша уже в
+                 работе (сплошная строка), у компании профиля ещё нет —
+                 это сказано пунктиром снизу, тем же языком, что у карточек
+                 с пометкой .pending, без единого слова оправдания -->
+            <div class="chan-state ig">
+              <div class="ig-row"><b>Sasha</b><em>being set up right now</em></div>
+              <div class="ig-row ig-pending"><b>Whoopy</b></div>
+            </div>
+          </div>
+        </div>
+        <!-- Было «Instagram» — но само слово уже стоит в шапке карточки
+             (.chan-name), подпись под картинкой его просто повторяла. У
+             соседей подпись говорит, ЧТО там, а не на какой площадке
+             («Разборы целиком», «Канал в Max»). Первая попытка — «Короткое —
+             Саша и компания» — оказалась длиннее соседних подписей и на
+             1180px (четыре карточки в ряд) переносилась на вторую строку,
+             карточка вываливалась из ряда по нижнему краю (проверила
+             iframe-замером на 1180/1000/900/700/640px). Профили и так
+             названы внутри самой карточки («Саша», «Whoopy») — подписи
+             незачем их повторять, хватает типа контента -->
+        <div class="cap">
+          <h3>Short and alive</h3>
+        </div>
+      </div>
+
+      <div class="thing rev" style="--d:.26s">
+        <div class="shot">
+          <div class="grid-bg"></div>
+          <div class="chan">
+            <div class="chan-top">
+              <span class="chan-ava">
+                <svg viewBox="0 0 32 32" aria-hidden="true">
+                  <path d="M5 24V11.5c0-2.4 2.9-3.4 4.4-1.6L16 18l6.6-8.1c1.5-1.8 4.4-.8 4.4 1.6V24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="chan-name">Max</span>
+            </div>
+            <div class="chan-body">
+              <ul class="plan">
+                <li>the same as Telegram — where our clients actually are</li>
+              </ul>
+            </div>
+            <div class="chan-state">Presence<em>right after Telegram</em></div>
+          </div>
+        </div>
+        <div class="cap">
+          <h3>The Max channel</h3>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Кому сделали · Lumi ──────────────────────────────── -->
+<section class="sec clients" id="clients">
+  <div class="wrap">
+    <div class="head rev">
+      <h2>Who we built for</h2>
+      <!-- «наши клиенты» вместо «покупателям»: маркетолог заметил, что три
+           экрана подряд читатель не знает наверняка, продаётся ли это вообще
+           другим компаниям или Whoopy просто построила себе. Одно слово
+           закрывает зазор там, где перенос целого раздела стоил бы дороже -->
+      <span class="sub">the same specialists, only in other people’s companies</span>
+    </div>
+
+    <div class="rail">
+      <a class="thing rev" style="--d:.05s" href="pudra.html">
+        <div class="shot big light">
+          <div class="grid-bg"></div>
+          <!-- В карточке 3 реплики из шести. Раздел стал лентой на три работы,
+               карточка ужалась втрое (380 px против прежних 685), и полный
+               диалог срезался рамкой сверху и снизу. Замеряла по факту:
+               в 16/10 при такой ширине помещаются три реплики по две строки,
+               четвёртая уже вылезает. Переписка целиком — на pudra.html,
+               куда карточка и ведёт -->
+          <div class="chat">
+            <div class="msg them">Hi! I’d like a cake for Saturday</div>
+            <div class="msg us">How many people, and what filling?</div>
+            <div class="msg them">About ten people, chocolate</div>
+          </div>
+          <div class="typeline"><span class="cursor"></span></div>
+        </div>
+        <div class="cap">
+          <h3>The orders aren’t taken by a person</h3>
+          <!-- Строка «Кондитерская Артёма, Москва — работает» была тут
+               отдельным .st-рядом — сняла её вместе с остальными, но факт
+               (единственное на сайте имя настоящего клиента) не потерян,
+               а вплетён в начало абзаца ниже -->
+          <p class="desc">Pudra works at Artyom Kirilovskiy’s patisserie in Moscow: the same AI specialist, only turned outward — inside a company they run departments, here she talks to customers.</p>
+          <p class="more">read the whole conversation</p>
+        </div>
+      </a>
+
+      <!-- 04.08.2026: заглушка «Здесь встанет второй» снята — место больше не
+           пустое. Саша назвал две работы, которых на сайте не было: смены и
+           найм в Stories Lounge (тот самый клиент, что заказал сначала одного
+           бота, а следом второго). Клиентов двое, работ три — считаем по
+           работам, потому что раздел про сделанное, а не про счёт заказчиков. -->
+      <a class="thing rev" style="--d:.15s" href="shifts.html">
+        <div class="shot big">
+          <div class="grid-bg"></div>
+          <div class="shift">
+            <div class="sh-row sh-head">
+              <b></b>
+              <span>mon</span><span>tue</span><span>wed</span><span>thu</span><span>fri</span><span>sat</span><span>sun</span>
+            </div>
+            <div class="sh-row">
+              <b>floor</b>
+              <i class="on"></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i>
+            </div>
+            <div class="sh-row">
+              <b>bar</b>
+              <i class="on"></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i>
+            </div>
+            <div class="sh-row">
+              <b>kitchen</b>
+              <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="fix"></i><i class="on"></i><i class="on"></i>
+            </div>
+            <div class="sh-row">
+              <b>host</b>
+              <i></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i>
+            </div>
+          </div>
+        </div>
+        <div class="cap">
+          <h3>Staff shifts aren’t set by the manager</h3>
+          <p class="desc">At Stories Lounge the rota is handled by an AI specialist: it holds the whole schedule and makes sure no shift is left without people.</p>
+          <p class="more">see how the rota works</p>
+        </div>
+      </a>
+
+      <a class="thing rev" style="--d:.25s" href="hiring.html">
+        <div class="shot big light">
+          <div class="grid-bg"></div>
+          <!-- Три реплики из пяти и короче, чем на внутренней странице, — по той
+               же мерке, что у соседней карточки. Целиком — на hiring.html -->
+          <div class="chat">
+            <div class="msg us">Where did you work over the past year?</div>
+            <div class="msg them">Bartender, a year and a half, a coffee shop on Nikolskaya</div>
+            <div class="msg us">What did you do at peak hour, with a queue?</div>
+          </div>
+          <div class="typeline"><span class="cursor"></span></div>
+        </div>
+        <div class="cap">
+          <h3>The interview isn’t run by a person</h3>
+          <p class="desc">A second specialist at the same venue talks to candidates itself: it runs the interview, asks the questions that matter and brings the owner a conclusion instead of a pile of applications.</p>
+          <p class="more">read the full interview</p>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── О компании ───────────────────────────────────────── -->
+<section class="sec about" id="about">
+  <div class="wrap">
+    <div class="about-in rev">
+      <!-- Раздел пересобран 03.08.2026. Было: заголовок в четыре слова и три
+           абзаца по центру — Саша сказал «немного нелепо выглядит, нужно
+           кое-что новое; например "что делаем", и как вывеска».
+           Теперь он и построен как вывеска: мелкая метка сверху, крупная
+           строка предложения, и только под ней — объяснение. -->
+      <!-- Абзац под вывеской правился ещё раз: в нём было ДВЕ разные вещи —
+           что мы делаем (перечислением «память, отделы, задачи,
+           ИИ-специалистов») и для кого это. Перечисление снято — оно же
+           дублирует две карточки продукта ниже; осталась одна строка про
+           клиента. -->
+      <h2>What we do</h2>
+      <p class="signboard">We build a second brain<br>for your company</p>
+      <!-- В английской версии владелец — they, а не he: пол клиента мы не
+           знаем, и «he» в этом месте сужает адресата без всякой на то причины.
+           В русском той же проблемы нет — там «владельца» и «ему» родовые -->
+      <p class="lead">It covers the areas an owner doesn’t understand, or the ones they never get round to.</p>
+    </div>
+
+    <!-- Раздел был чистым текстом — вывеска и три абзаца. Саша: «тут можно
+         сделать такими же иконками, чтобы можно было посмотреть, что делаем».
+         Правка не косметическая, она чинит перекос: три раздела подряд
+         показывали ВЕЩИ, и только последний — тот самый, где человек решает,
+         покупать ли, — переходил на слова. Теперь предложение показано теми же
+         карточками, что и всё остальное, и каждая открывается страницей.
+         Цен на карточках нет намеренно: по нашему методу мозг продаётся как
+         сотрудничество, а не коробка, и сами выбираем, с кем работать.
+         Прайс на витрине этому противоречит — он ставит нас в ряд, где
+         сравнивают по числу. Число называется в разговоре. -->
+    <div class="two">
+
+      <a class="thing rev" style="--d:.05s" href="product-brain.html">
+        <div class="shot">
+          <div class="grid-bg"></div>
+          <div class="blueprint">
+            <svg viewBox="0 0 200 120" aria-hidden="true">
+              <rect x="62" y="10" width="76" height="26" rx="7"/>
+              <path d="M100 36v14M40 50h120M40 50v10M80 50v10M120 50v10M160 50v10"/>
+              <rect x="26" y="60" width="28" height="24" rx="5"/>
+              <rect x="66" y="60" width="28" height="24" rx="5"/>
+              <rect x="106" y="60" width="28" height="24" rx="5"/>
+              <rect x="146" y="60" width="28" height="24" rx="5"/>
+              <path d="M40 84v12M80 84v12M120 84v12M160 84v12" stroke-dasharray="3 4" opacity=".6"/>
+            </svg>
+          </div>
+          <div class="state-big">Inside the company<em>planning, finances, promotion, tasks</em></div>
+        </div>
+        <div class="cap">
+          <h3>Second brain</h3>
+          <p class="desc">A control centre with departments and a memory. The owner keeps doing what they do best — the brain runs the rest.</p>
+          <p class="more">what’s included</p>
+        </div>
+      </a>
+
+      <a class="thing rev" style="--d:.15s" href="product-specialist.html">
+        <div class="shot">
+          <div class="grid-bg"></div>
+          <div class="blueprint">
+            <!-- Слева отдел (прямоугольник), справа человек — это и есть две
+                 стороны, куда специалист поворачивается. Под ним три полосы:
+                 его память слоями, то единственное, чем он отличается от чата
+                 с промптом. Первая версия была симметричной — два одинаковых
+                 кружка по бокам, — и не говорила ничего: одинаковые фигуры
+                 читаются как украшение, а не как «внутрь и наружу». -->
+            <svg viewBox="0 0 200 120" aria-hidden="true">
+              <rect x="76" y="18" width="48" height="34" rx="8"/>
+              <path d="M88 30h24M88 40h16"/>
+              <path d="M82 62h36M86 71h28M90 80h20" opacity=".55"/>
+              <path d="M76 35H50" stroke-dasharray="3 4"/>
+              <rect x="16" y="24" width="30" height="22" rx="5"/>
+              <path d="M124 35h26" stroke-dasharray="3 4"/>
+              <circle cx="168" cy="28" r="7"/>
+              <path d="M157 48c1.5-6.5 5.5-10 11-10s9.5 3.5 11 10"/>
+            </svg>
+          </div>
+          <div class="state-big">Outward and inward<em>runs a department or talks to your customers</em></div>
+        </div>
+        <div class="cap">
+          <h3>AI specialist</h3>
+          <p class="desc">An employee with a memory and a remit of its own. Inside they run departments; outside they take orders, like Pudra at the patisserie.</p>
+          <p class="more">what’s included</p>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Подвал · Boofy и Lumi вдвоём ─────────────────────── -->
+<footer id="write">
+  <div class="wrap">
+    <!-- ⚠️ href подставить: прямая ссылка на Сашу -->
+    <a class="door rev" href="https://t.me/mr_nobode" target="_blank" rel="noopener">Get in touch</a>
+    <!-- Строка «Отвечает Саша…» снята 03.08.2026 по его слову: у двери человек
+         решает, писать или нет, и лишняя строка держала внимание, а не отпускала. -->
+    <!-- Здесь стояла подпись «эту страницу собрал второй мозг Whoopy».
+         Снята 03.08.2026 вместе с остальными отсылками к самой странице.
+         Мысль верная, но место неверное: у двери человек решает, писать или
+         нет, — и последнее, что он читает, должно быть про него, а не про то,
+         как сделан сайт. Приём сохранён для соцсетей, где он на своём месте. -->
+  </div>
+</footer>
+
+<script src="../home.js"></script>
+</body>
+</html>

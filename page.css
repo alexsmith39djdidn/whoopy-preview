@@ -1,0 +1,1471 @@
+/* Общий стиль страниц-записей Whoopy.
+   Одна запись — одна страница: что произошло, коротко и по фактам. */
+:root{
+  --u:8px;
+  --bg:#FFFFFF;   /* белый и только белый — как на главной (решение Саши 31.07.2026) */
+  --card:#FFFFFF;
+  --dark:#111111;
+  --ink:#111111;
+  --grey:#6E6E6E;
+  --line:#E4E4E0;
+  --mark:#B4231F;
+  --r:16px;
+  --r-s:8px;    /* мелкий радиус: метки, плашки. Других радиусов нет */
+  /* та же тень, что на главной. Раньше здесь стояли свои числа (.04/.07 против
+     .05/.08 и другие радиусы) — одна и та же карточка на двух страницах
+     отбрасывала разную тень. Разошлись они не по замыслу, а потому что файлы
+     писались порознь */
+  --sh:0 2px 6px rgba(17,17,17,.05), 0 14px 34px rgba(17,17,17,.08);
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+/* clip, а не hidden, и обязательно на обоих элементах.
+   Свет вверху страницы (body::before) намеренно вылезает за правый край на
+   393 px — так пятно не читается кругом. Одного `overflow-x:hidden` на body
+   не хватало: он не обрезал его и давал 442 px боковой прокрутки на всех
+   внутренних страницах. Hidden на html тут поставить нельзя — он делает
+   корень контейнером прокрутки и ломает липкую кнопку «ко всему».
+   Clip обрезает, но контейнера не создаёт. */
+html,body{overflow-x:clip}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:'Onest',system-ui,sans-serif;line-height:1.5;
+  -webkit-font-smoothing:antialiased;position:relative;
+}
+/* те же две вещи, что на главной, — иначе запись выглядит другим сайтом:
+   зерно поверх всего и один тёплый свет вверху. Числа взяты оттуда же */
+body::after{
+  content:'';position:fixed;inset:0;z-index:9;pointer-events:none;opacity:.032;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+body::before{
+  content:'';position:absolute;z-index:-1;pointer-events:none;border-radius:50%;
+  width:clamp(560px,68vw,1100px);height:clamp(280px,30vw,520px);
+  right:-16%;top:-6%;
+  /* тон берётся у самой записи: страница про клиентское светится синим,
+     про разработку — зелёным. Так запись и её обложка одного цвета,
+     а не спорят между собой */
+  background:radial-gradient(50% 50% at 50% 50%,
+              rgba(var(--glow-top),.30) 0%,rgba(var(--glow-top),.22) 22%,
+              rgba(var(--glow-top),.13) 44%,rgba(var(--glow-top),.05) 62%,
+              rgba(var(--glow-top),0) 78%);
+  transform:rotate(-15deg);
+}
+:root{--glow-top:166,119,207}                        /* фиолетовый, как на первом экране */
+body:has(.page.tone-blue){--glow-top:119,171,207}
+body:has(.page.tone-violet){--glow-top:187,119,207}
+/* Тон кондитерской (слово Саши 04.08.2026: «бежевый, розовый и коричневый,
+   как будто в стиле пироженок»). Единственная страница сайта со своим
+   цветом — и это оправдано: она про чужой бизнес, а не про нас. Свет вверху
+   тёплый бежевый, тень под блоками розовая, огонёк внизу — карамельный.
+   Больше трёх пятен не ставлю: страница длинная, и свет должен отмечать
+   начало и конец, а не сопровождать каждый абзац. */
+body:has(.page.tone-pudra){--glow-top:214,180,140}
+body:has(.page.tone-pudra)::after{opacity:.028}
+/* второй огонёк — внизу слева, розовый. Отдельным элементом, потому что
+   body::before уже занят верхним светом */
+body:has(.page.tone-pudra) .page::before{
+  content:'';position:absolute;z-index:-1;pointer-events:none;border-radius:50%;
+  width:clamp(420px,52vw,820px);height:clamp(240px,26vw,420px);
+  left:-14%;top:62%;
+  background:radial-gradient(50% 50% at 50% 50%,
+              rgba(226,168,178,.26) 0%,rgba(226,168,178,.16) 30%,
+              rgba(226,168,178,.07) 56%,rgba(226,168,178,0) 78%);
+  transform:rotate(12deg);
+}
+.page.tone-pudra{position:relative}
+a{color:inherit}
+
+/* Вывески на страницах-записях больше нет — только кнопка назад (слово Саши
+   03.08.2026: «в текстах убери верхнюю вывеску, сделай, только чтобы было
+   кнопка назад»). Логика простая: сюда человек попадает уже изнутри сайта,
+   ему не надо представляться второй раз — ему надо уметь вернуться.
+   Плашка тоже перестала быть полосой: это отдельный стеклянный островок,
+   как на главной. */
+.bar{position:sticky;top:0;z-index:50;pointer-events:none}
+.bar-in{
+  max-width:1180px;margin:0 auto;padding:calc(var(--u)*2) calc(var(--u)*4);
+  display:flex;align-items:center;font-size:14px;
+}
+.back{
+  pointer-events:auto;
+  color:var(--ink);text-decoration:none;font-size:14px;
+  padding:8px 18px;border-radius:100px;
+  background:rgba(255,255,255,.62);
+  border:1px solid rgba(17,17,17,.06);
+  -webkit-backdrop-filter:blur(16px) saturate(1.4);
+  backdrop-filter:blur(16px) saturate(1.4);
+  transition:background .25s var(--ease), color .25s var(--ease);
+}
+.back:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+/* Переключатель языка — тот же островок, что кнопка «назад», только тише и
+   с другой стороны плашки. Разметка: <a class="lang" href="en/…">EN</a>
+   в .bar-in следом за .back. Правила те же, что на главной: моноширинный,
+   две буквы, без флагов */
+.lang{
+  pointer-events:auto;margin-left:auto;
+  color:var(--ink2);text-decoration:none;
+  font-family:'PT Mono',monospace;font-size:13px;letter-spacing:.02em;
+  padding:8px 14px;border-radius:100px;
+  background:rgba(255,255,255,.62);
+  border:1px solid rgba(17,17,17,.06);
+  -webkit-backdrop-filter:blur(16px) saturate(1.4);
+  backdrop-filter:blur(16px) saturate(1.4);
+  transition:background .25s var(--ease), color .25s var(--ease);
+}
+.lang:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* Разброс по сторонам (слово Саши 03.08.2026) отменён следующим же слоем
+   правок: «сделай ровно» (03.08.2026, позже в тот же день). Теперь у страницы
+   одна левая граница на всё: текст держит узкую колонку по центру, тяжёлые
+   блоки — обложки, схемы, плитки — тоже по центру, просто шире. Правило
+   ниже — источник этой границы; каждое следующее правило в файле обязано
+   трогать только margin-top/margin-bottom у этих же элементов, а не
+   margin-left/right — иначе шорткат `margin:` с 2–3 значениями бесшумно
+   обнулит центрирование (так и разъехался текст: у `.pull`, `.page ul` и
+   `.page h2` совпадающей специфичности `margin: X 0 Y` стирал auto). */
+/* Верхнее поле сжато 05.08.2026 (было --u*10). Аудит Саши: «страница прямо
+   немного вниз, когда заходит — видно, но обрывается». Причина была не в
+   обложке, а над ней: до заголовка уходило 187 px пустоты, всё содержимое
+   съезжало вниз, и обложка обрывалась нижней кромкой окна. */
+.page{max-width:1060px;margin:0 auto;padding:calc(var(--u)*6) calc(var(--u)*4) calc(var(--u)*12)}
+.page > p,.page > h1,.page > h2,.page > h3,
+.page > .kind,.page > .meta,.page > ul,.page > .pull{
+  max-width:620px;margin-left:auto;margin-right:auto;
+}
+.kind{font-size:13px;color:var(--grey);margin-bottom:calc(var(--u)*2)}
+h1{
+  font-size:clamp(30px,4.4vw,46px);font-weight:500;line-height:1.12;
+  letter-spacing:-.025em;text-wrap:balance;
+}
+.meta{
+  margin-top:calc(var(--u)*2);font-size:13px;color:var(--grey);
+  display:flex;gap:var(--u);align-items:center;flex-wrap:wrap;
+}
+.meta .dot{width:5px;height:5px;border-radius:50%;background:var(--grey);opacity:.45}
+/* Абзац сразу после подписи-меты. Раньше такого случая не было: за метой
+   всегда шла обложка со своим большим полем, и текст к ней не подходил
+   вплотную. На странице продукта первым идёт абзац — без этого правила он
+   прилипал к строке «внутрь компании · ставим с июня 2026» и читался её
+   продолжением. */
+.meta + p{margin-top:calc(var(--u)*6)}
+/* 05.08.2026: строку .meta сняли со всех страниц, и там, где за заголовком
+   сразу идёт текст, абзац прилип к h1 вплотную. Зазор держала мета — теперь
+   его держит это правило. Тот же случай, что и выше, только соседом стал h1. */
+h1 + p{margin-top:calc(var(--u)*4)}
+
+.cov{
+  position:relative;background:var(--dark);border-radius:var(--r);
+  overflow:hidden;box-shadow:var(--sh);
+  margin:calc(var(--u)*5) auto calc(var(--u)*9);aspect-ratio:16/9;
+  width:100%;max-width:840px;
+}
+/* На невысоком окне (ноутбук, окно не на весь экран) обложка 16/9 не влезала
+   под заголовок и срезалась посередине — самый неприятный вид: не видно ни
+   целого, ни явного продолжения. Здесь она сжимается по высоте до остатка
+   экрана.
+   ⚠️ Почему это безопасно, хотя aspect-ratio + height я уже ломала однажды:
+   там высота задавалась при НЕзаданной ширине, и браузер считал ширину из
+   высоты — карточка наезжала на соседа. Тут ширина задана явно (width:100% +
+   max-width), поэтому max-height только обрезает высоту и на ширину не влияет. */
+/* 380px — это замер, а не догадка. Верх обложки стоит ниже всего на странице
+   специалиста (359 px: заголовок в строку плюс абзац перед ней), а не на
+   странице с самым длинным заголовком, как я прикинула сначала, — с 365 там
+   оставалось 6 px запаса. Считаем по худшему случаю из девяти страниц. */
+@media (max-height:820px){
+  .cov{max-height:calc(100vh - 380px)}
+}
+
+/* Высветка под блоком — по слову Саши, «и под них такие высветки цвета».
+   Сделана цветной тенью, а не отдельным пятном под карточкой: у .cov стоит
+   overflow:hidden (иначе схема внутри вылезала за скруглённые углы), и любой
+   псевдоэлемент под ней срезался бы этой же обрезкой. Тень же рисуется
+   снаружи блока и обрезке не подчиняется — тот же результат без борьбы.
+   Цвет — метка записи: у каждой свой тон, и он держится через все её блоки */
+.cov{
+  box-shadow:var(--sh), 0 48px 90px -24px rgba(var(--glow),.50);
+}
+.page{--glow:119,207,166}                 /* зелёный — разработки */
+.page.tone-blue{--glow:119,171,207}       /* синий — клиентское */
+.page.tone-violet{--glow:187,119,207}     /* фиолетовый — про нас */
+.page.tone-pudra{--glow:226,168,178}      /* розовый — кондитерская */
+.cov.light{background:#EFEFEC}
+.cov .grid-bg{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.055) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+.cov.light .grid-bg{
+  background-image:
+    linear-gradient(rgba(17,17,17,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(17,17,17,.05) 1px,transparent 1px);
+}
+.cov .stamp-cov{
+  position:absolute;left:calc(var(--u)*2.5);bottom:calc(var(--u)*2);
+  font-size:11px;color:rgba(255,255,255,.55);
+}
+.cov.light .stamp-cov{color:var(--grey)}
+.blueprint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.blueprint svg{width:48%;height:auto;stroke:rgba(255,255,255,.62);fill:none;stroke-width:1.2;
+               stroke-linecap:round;stroke-linejoin:round}
+
+/* схема мозга — та же, что на главной */
+.dia{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+     padding:calc(var(--u)*4) calc(var(--u)*5) calc(var(--u)*6);gap:var(--u)}
+.d-core{background:#fff;color:#111;border-radius:8px;
+        padding:calc(var(--u)*1.5) calc(var(--u)*2);font-size:13px;font-weight:500}
+.d-core span{display:block;font-size:11px;color:#6E6E6E;font-weight:400;margin-top:2px;line-height:1.35}
+.d-row{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--u)}
+.d-c{border:1px solid rgba(255,255,255,.17);border-radius:8px;
+     padding:calc(var(--u)*1.5);font-size:11px;color:rgba(255,255,255,.5);
+     line-height:1.3;min-height:62px;display:flex;flex-direction:column}
+.d-c.on{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.28);color:#fff}
+/* «место ждёт» — толщина 1px, альфа .32, тот же язык, что уже стоит на
+   главной (.thing.pending .shot, .d-c.off там же). Раньше здесь был .17
+   от базового .d-c — та же по смыслу ячейка отдела на двух страницах
+   расходилась прозрачностью не по замыслу, а потому что писались порознь */
+.d-c.off{border-style:dashed;border-color:rgba(255,255,255,.32)}
+.d-c i{font-style:normal;font-size:11px;opacity:.7;margin-top:auto;
+       display:flex;align-items:center;gap:6px}
+.d-c.on i::before{
+  content:'';width:5px;height:5px;border-radius:50%;background:#fff;flex:none;
+  animation:pulse 3.2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:.25}50%{opacity:1}}
+
+/* диалог */
+.chat{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+      gap:var(--u);padding:calc(var(--u)*4) calc(var(--u)*5) calc(var(--u)*6)}
+/* было radius 12px и кегль 12,5px — оба мимо своих шкал (радиусы у нас 8/16/100,
+   дробных кеглей нет вовсе). Дробное число почти всегда значит «крутила ползунок,
+   пока не легло», и опытный глаз читает это первым */
+.msg{border-radius:8px;padding:calc(var(--u)*1.5) calc(var(--u)*2);font-size:13px;
+     max-width:70%;line-height:1.35}
+.msg.them{background:#fff;color:var(--ink);align-self:flex-start;border:1px solid var(--line)}
+.msg.us{background:var(--dark);color:#fff;align-self:flex-end}
+
+/* График смен (shifts.html) — тот же чертёж, что схемы на главной: строка на
+   позицию, столбец на день, закрытая смена заливкой, пустая рамка — смена без
+   человека. Разметка:
+   <div class="shift">
+     <div class="sh-row sh-head"><b></b><span>пн</span>…</div>
+     <div class="sh-row"><b>зал</b><i class="on"></i><i></i>…</div>
+   </div>
+   Числа те же, что в index.html, но заведены отдельно: на внутренней странице
+   обложка ниже, и ячейка мельче — не общий класс, а тот же язык */
+/* Ширина ограничена 620 px: обложка внутренней страницы шире карточки на
+   главной, и растянутый на всю ширину график превращался в четыре длинные
+   полосы — сетка перестаёт читаться как расписание, когда ячейка втрое шире
+   собственной высоты */
+.shift{
+  position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+  align-items:center;gap:8px;padding:calc(var(--u)*4) calc(var(--u)*5);
+}
+.sh-row{display:grid;grid-template-columns:52px repeat(7,1fr);gap:7px;align-items:center;
+        width:100%;max-width:620px}
+.sh-row b{
+  font-family:'PT Mono',monospace;font-weight:400;font-size:11px;
+  color:rgba(255,255,255,.55);
+}
+.sh-row i{
+  display:block;height:26px;border-radius:5px;
+  border:1px dashed rgba(255,255,255,.22);
+}
+.sh-row i.on{background:rgba(255,255,255,.26);border:1px solid rgba(255,255,255,.34)}
+.sh-row i.fix{background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.72)}
+.sh-head span{
+  font-family:'PT Mono',monospace;font-size:10px;text-align:center;
+  color:rgba(255,255,255,.4);
+}
+
+/* текст записи */
+.page p{font-size:18px;margin-bottom:calc(var(--u)*3)}
+.page h2{font-size:22px;font-weight:500;letter-spacing:-.01em;
+         margin-top:calc(var(--u)*6);margin-bottom:calc(var(--u)*2);line-height:1.25}
+
+/* Список стал строкой описи, а не бытовым перечислением — «Маркетинг —
+   тексты, рубрики, площадки» это опись устройства, не проза, и точка-буллет
+   с тире здесь были декорацией из другого жанра. Ключ слева моноширинным
+   (служебное у нас всегда PT Mono, как в .num), значение справа обычным
+   Onest, между строками тонкая линия вместо буллета. Шрифт с засечками для
+   значения пробовали и откатили (хозяин, 04.08.2026: «такой текст не в
+   тему») — минимализм важнее книжности, один гротеск на весь сайт.
+   Разметка: <ul><li><b>Ключ</b><span>значение</span></li>…</ul> */
+.page ul{
+  list-style:none;margin-top:0;margin-bottom:calc(var(--u)*3);
+  padding-left:0;border-top:1px solid var(--line);
+}
+.page li{
+  display:grid;grid-template-columns:172px 1fr;gap:calc(var(--u)*3);
+  padding:calc(var(--u)*2) 0;border-bottom:1px solid var(--line);
+}
+.page li b{
+  font-family:'PT Mono',monospace;font-weight:400;font-size:13px;
+  letter-spacing:.01em;color:var(--ink);line-height:1.6;
+}
+.page li span{font-size:17px;line-height:1.5;color:var(--ink)}
+
+/* Выноска — раньше серая карточка со скруглением и тенью, самая «чат-ботовая»
+   деталь на кадре (хозяин ткнул в неё 04.08.2026). Теперь без фона и без
+   тени: вертикальная линия слева и кегль крупнее обычного текста — как
+   маргиналия на полях книги, а не всплывающая панель интерфейса. Шрифт —
+   Onest, как везде на сайте. */
+.pull{
+  border-left:2px solid var(--ink);padding-left:calc(var(--u)*3);
+  margin-top:calc(var(--u)*6);margin-bottom:calc(var(--u)*6);
+  font-size:19px;line-height:1.5;color:var(--grey);
+}
+.pull b{color:var(--ink);font-weight:500}
+
+/* .claims — «пара надписей про силу моделей» (Саша, аудит 05.08.2026).
+   Открывающий блок страницы продукта: три утверждения о том, чем ИИ уже
+   является, если дать ему память и зону ответственности. Форма нарочно не
+   .pull и не .tiles: .pull — это одна выделенная мысль, .tiles — опись
+   функций, а тут нужен ряд равновесных заявлений, где каждое читается
+   отдельно и весит одинаково. Отсюда разделители, а не рамки. */
+.claims{max-width:620px;margin:calc(var(--u)*5) auto calc(var(--u)*6);border-top:1px solid var(--line)}
+.claims > div{border-bottom:1px solid var(--line);padding:calc(var(--u)*2.5) 0}
+.claims b{display:block;font-size:19px;font-weight:500;line-height:1.4;letter-spacing:-.01em}
+.claims span{display:block;margin-top:6px;font-size:16px;line-height:1.5;color:var(--grey)}
+
+/* .ask — поворотная строка страницы: вопрос, после которого начинаются
+   доказательства. Саша задал ей и место, и слова: «и что если такое
+   возможно». Крупная и по центру, потому что это шов между двумя половинами
+   страницы — до неё разговор про читателя, после неё про вещь. */
+/* Селектор именно .page p.ask, а не .ask: ниже стоит `.page p{font-size:18px}`
+   со специфичностью (0,1,1), и одиночный класс ей проигрывал — вопрос
+   выходил мельче соседнего заголовка, то есть акцент читался как проходная
+   строка. Проверено замером: было 18px при заказанных 28. */
+.page p.ask{
+  max-width:620px;margin:calc(var(--u)*8) auto;
+  font-size:clamp(22px,3vw,28px);font-weight:500;line-height:1.3;
+  letter-spacing:-.02em;text-align:center;text-wrap:balance;
+}
+/* Ссылка внутри текста записи. Подчёркивание отодвинуто от букв и сделано
+   тонким тоном страницы: на страницах продуктов такие ссылки ведут к живым
+   доказательствам (переписка Пудры, наш собственный мозг), и они обязаны
+   читаться как дверь — но не спорить с текстом, который их окружает. */
+.page p > a{
+  color:var(--ink);text-decoration:underline;
+  text-decoration-color:rgba(var(--glow),.9);
+  text-underline-offset:4px;text-decoration-thickness:1px;
+  transition:text-decoration-color .25s var(--ease);
+}
+.page p > a:hover{text-decoration-color:var(--ink)}
+
+.end{margin-top:calc(var(--u)*9);padding-top:calc(var(--u)*6);
+     border-top:1px solid var(--line);text-align:center}
+.door{
+  display:inline-block;border:1px solid var(--ink);border-radius:100px;
+  padding:calc(var(--u)*2) calc(var(--u)*5);font-size:18px;text-decoration:none;
+  transition:background .25s var(--ease), color .25s var(--ease);
+}
+.door:hover{background:var(--ink);color:#fff}
+
+/* ======================================================================
+   Библиотека блоков (03.08.2026). Задача — текст должен перемежаться
+   схемами, примерно один блок на 2-3 абзаца, а не идти сплошняком.
+   Каждый класс — самостоятельная единица, ставится прямо в .page между
+   абзацами. Три уже жили в файле (.cov, .chat, .grid-bg) — остальные новые.
+   ====================================================================== */
+
+/* .checker — клетчатый язык схем сайта: один шаг (28px), одна прозрачность.
+   Отдельный слой поверх любого relative-блока, сам по себе невидим без
+   фона под ним. По умолчанию — светлые линии (для тёмных блоков);
+   модификатор .on-light — тёмные линии (для светлых блоков).
+   Разметка: <div class="checker"></div> внутри блока с position:relative. */
+.checker{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.055) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+.checker.on-light{
+  background-image:
+    linear-gradient(rgba(17,17,17,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(17,17,17,.05) 1px,transparent 1px);
+}
+
+/* .slot — пунктир как язык незанятого места: пустая ячейка, будущий блок,
+   отдел без специалиста. Один и тот же пунктир везде — он заменяет
+   словесное «здесь пока никого», это видно и так. Толщина 1px, альфа .32 —
+   число не моё, взято с главной (.thing.pending .shot, .d-c.off), чтобы
+   пунктир на всех пяти страницах читался одной рукой, а не пятью похожими.
+   По умолчанию — для светлого фона; модификатор .on-dark — для тёмного
+   (внутри .cov). Разметка: <div class="slot">подпись или пусто</div> */
+.slot{
+  border:1px dashed rgba(17,17,17,.32);border-radius:8px;
+  padding:calc(var(--u)*2);font-size:13px;color:var(--grey);
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  min-height:64px;
+}
+.slot.on-dark{border-color:rgba(255,255,255,.32);color:rgba(255,255,255,.5)}
+
+/* .tiles / .tile — ряд из 2-4 небольших схем-плиток рядом, не во всю ширину
+   страницы: для параллельных вещей (зоны, форматы, отделы). Шире текстовой
+   колонки (620), у́же обложки (840) — так у страницы три ощутимых ширины,
+   а не две. Разметка:
+   <div class="tiles"><div class="tile"><b>Заголовок</b><span>подпись</span></div>...</div>
+   Модификатор .tile.light — светлая плитка вместо тёмной. */
+.tiles{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:var(--u);max-width:780px;margin:calc(var(--u)*6) auto;
+}
+.tile{
+  position:relative;overflow:hidden;background:var(--dark);color:#fff;
+  border-radius:8px;padding:calc(var(--u)*2);min-height:104px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+}
+.tile b{position:relative;font-size:13px;font-weight:500;line-height:1.3}
+.tile span{position:relative;font-size:11px;color:rgba(255,255,255,.5);margin-top:2px}
+.tile.light{background:#EFEFEC;color:var(--ink)}
+.tile.light span{color:var(--grey)}
+
+
+/* .nums — 2-4 крупные цифры с подписью, моноширинным: факты вроде «сколько
+   месяцев работает», «сколько отделов», «сколько файлов памяти». Разметка:
+   <div class="nums"><div class="num">4<span>отдела</span></div>...</div> */
+.nums{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:calc(var(--u)*3);max-width:780px;margin:calc(var(--u)*6) auto;
+  text-align:center;
+}
+.num{font-family:'PT Mono',monospace;font-size:clamp(28px,4vw,40px);font-weight:500}
+.num span{
+  display:block;font-family:'Onest',sans-serif;font-weight:400;
+  font-size:13px;color:var(--grey);margin-top:calc(var(--u)/2);
+}
+
+/* .steps — горизонтальная лесенка из 3 ступеней со связью между ними: путь,
+   который проходит вещь («мозг забирает руль ступенями»). Связь рисуется
+   псевдоэлементами — линия и стрелка между соседями, без картинок.
+   Разметка: <div class="steps"><div class="step"><b>1 — метка</b>текст</div>×3</div> */
+.steps{display:flex;max-width:780px;margin:calc(var(--u)*6) auto}
+.step{
+  position:relative;flex:1;background:var(--dark);color:#fff;border-radius:8px;
+  padding:calc(var(--u)*2);font-size:13px;line-height:1.4;
+}
+.step b{display:block;font-size:11px;font-weight:400;color:rgba(255,255,255,.5);margin-bottom:4px}
+.step + .step{margin-left:calc(var(--u)*4)}
+.step + .step::before{
+  content:'';position:absolute;left:calc(var(--u)*-4);top:50%;width:calc(var(--u)*3);
+  height:1px;background:var(--line);
+}
+.step + .step::after{
+  content:'';position:absolute;left:calc(var(--u)*-1 - 5px);top:50%;transform:translateY(-50%);
+  width:0;height:0;border:4px solid transparent;border-left-color:var(--line);
+}
+/* .step.later — стадия ещё не наступила. Вместо сплошной тёмной заливки —
+   тот же пунктир, что у .slot: толщина 1px, альфа .32 от чернил, один язык
+   незанятого места на весь сайт вместо трёх похожих. Слова вроде «следующий
+   шаг» тут лишние — вид уже сказал то же самое. Связь-стрелка, ведущая В
+   такую ступень, гаснет вместе с ней (полуопрозрачная), иначе пунктирный
+   блок повиснет на сплошной стрелке.
+   ⚠️ Пунктир читается по ближайшему ряду, а не по странице: две пунктирные
+   ступени подряд — ещё нормально, три из трёх — лесенка перестаёт быть
+   доказательством и становится обещанием. Держать .later в хвосте лесенки,
+   не по всей длине. */
+.step.later{
+  background:transparent;color:var(--grey);
+  border:1px dashed rgba(17,17,17,.32);
+}
+.step.later b{color:var(--grey);opacity:.75}
+.step + .step.later::before{opacity:.4}
+.step + .step.later::after{opacity:.4}
+
+/* .axis — было/стало одной осью вместо двух карточек с буллетами внутри
+   (вторая «чат-ботовая» деталь того же кадра). Ряды идут парами напротив
+   друг друга через общую линию. Правая сторона обязана выигрывать видом, а
+   не только текстом — но не новым значком: тот же язык пунктир/сплошная,
+   что уже стоит на странице у .slot и .step.later. «Было» тише, серым и с
+   пунктирной линией слева, как ждущая ступень; «стало» темнее, крупнее и
+   жирным, со сплошной линией — то же правило в третий раз, а не четвёртое
+   изобретение. Разметка:
+   <div class="axis">
+     <div class="axis-head"><span>Было</span><span>Стало</span></div>
+     <div class="axis-row"><div class="axis-was">…</div><div class="axis-now">…</div></div>
+     …
+   </div> */
+.axis{max-width:620px;margin:calc(var(--u)*6) auto}
+.axis-head{
+  display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--u)*4);
+  font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.04em;
+  color:var(--grey);padding-bottom:var(--u);border-bottom:1px solid var(--line);
+}
+.axis-head span:last-child{color:var(--ink)}
+.axis-row{
+  display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--u)*4);
+  padding:calc(var(--u)*2) 0;border-bottom:1px solid var(--line);
+  align-items:start;
+}
+.axis-was,.axis-now{line-height:1.45;padding-left:calc(var(--u)*1.5)}
+.axis-was{font-size:14px;color:var(--grey);border-left:1px dashed rgba(17,17,17,.32)}
+.axis-now{font-size:17px;font-weight:500;color:var(--ink);border-left:2px solid var(--ink)}
+
+/* ======================================================================
+   .demo — живая Пудра прямо на странице (04.08.2026, идея Саши).
+   Не картинка работы, а сама работа: диалог сначала разыгрывается сам —
+   медленно, с паузами и «печатает», как отвечает настоящий бот, — а потом
+   посетитель может написать ей сам. Это единственное место на всём сайте,
+   где продукт можно потрогать, поэтому он стоит на месте обложки, а не
+   внизу довеском.
+   Основание то же, что у .cov.light: светлая карточка, клетка, тень тоном
+   записи. Разница одна — высота не 16/9, а фиксированная: внутри лента,
+   которая живёт и растёт.
+   Разметка:
+   <div class="demo">
+     <div class="grid-bg"></div>
+     <div class="demo-chat" id="demoChat"></div>
+     <div class="demo-bar">
+       <input class="demo-in" ...><button class="demo-go">…</button>
+     </div>
+     <span class="stamp-cov">…</span>
+   </div>
+   ====================================================================== */
+.demo{
+  position:relative;background:#EFEFEC;border-radius:var(--r);overflow:hidden;
+  box-shadow:var(--sh), 0 48px 90px -24px rgba(var(--glow),.50);
+  margin:calc(var(--u)*5) auto calc(var(--u)*4);
+  width:100%;max-width:840px;height:440px;
+  display:flex;flex-direction:column;
+}
+/* Демо-переписка — такая же обложка первого экрана, как .cov, и на невысоком
+   окне срезалась ровно так же. Лента реплик едет вверх сама, поэтому меньшая
+   высота ей ничего не ломает: видно просто меньше строк разговора разом. */
+@media (max-height:820px){
+  .demo{max-height:calc(100vh - 380px)}
+}
+.demo .grid-bg{
+  background-image:
+    linear-gradient(rgba(17,17,17,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(17,17,17,.05) 1px,transparent 1px);
+}
+.demo-chat{
+  position:relative;flex:1;overflow-y:auto;
+  display:flex;flex-direction:column;gap:var(--u);
+  padding:calc(var(--u)*4) calc(var(--u)*5) calc(var(--u)*2);
+  scrollbar-width:thin;scrollbar-color:rgba(17,17,17,.18) transparent;
+}
+.demo-chat::-webkit-scrollbar{width:6px}
+.demo-chat::-webkit-scrollbar-thumb{background:rgba(17,17,17,.18);border-radius:100px}
+/* реплики те же, что в статичных обложках (.msg), — но появляются, а не
+   лежат: полупрозрачные и на 6px ниже, пока не встали на место */
+.demo-chat .msg{
+  opacity:0;transform:translateY(6px);
+  animation:msgIn .45s var(--ease) forwards;
+  white-space:pre-line;
+}
+@keyframes msgIn{to{opacity:1;transform:none}}
+/* «печатает» — три точки в такой же пилюле, как реплика бота. Именно эта
+   пауза и делает разговор живым: мгновенный ответ читается как форма,
+   а не как собеседник */
+.typing{
+  align-self:flex-end;background:var(--dark);border-radius:8px;
+  padding:calc(var(--u)*1.75) calc(var(--u)*2);display:flex;gap:5px;align-items:center;
+  opacity:0;animation:msgIn .3s var(--ease) forwards;
+}
+.typing i{width:5px;height:5px;border-radius:50%;background:#fff;opacity:.35;
+          animation:dot 1.3s ease-in-out infinite}
+.typing i:nth-child(2){animation-delay:.18s}
+.typing i:nth-child(3){animation-delay:.36s}
+@keyframes dot{0%,100%{opacity:.25;transform:translateY(0)}45%{opacity:1;transform:translateY(-3px)}}
+
+/* Поля ввода здесь больше нет (слово Саши 04.08.2026: «только демо, без
+   возможности написать»). Возражения у меня нет: живой ввод обязывает
+   отвечать на что угодно, а отвечает при этом не бот, а сценарий — и первый
+   же вопрос вне списка выдавал бы муляж. Показанный разговор честнее
+   недоигранного.
+   Стили .chips / .demo-bar / .demo-in / .demo-go удалены целиком, а не
+   спрятаны: мёртвый CSS переживает всех, кто помнил, зачем он был. */
+/* штампа «отвечает не человек» здесь нет намеренно: это говорит заголовок
+   страницы, а подпись под блоком говорит важнее — что перед вами муляж.
+   Три раза одно и то же на одном экране читается как оправдание */
+/* ======================================================================
+   .belt — конвейер главных функций (04.08.2026, слово Саши: «3 интересные
+   функции, сделаны анимациями, как такой конвеер в бок»). Лента едет вбок,
+   на узком экране — пролистывается пальцем.
+   Панель = живая схема сверху + два слова снизу. Анимация внутри идёт сама,
+   но только пока панель на экране: иначе три цикла крутятся вхолостую и
+   греют ноутбук у человека, который читает совсем другой абзац.
+   ====================================================================== */
+.belt{
+  display:flex;gap:calc(var(--u)*2);overflow-x:auto;scroll-snap-type:x mandatory;
+  margin:calc(var(--u)*6) 0 calc(var(--u)*4);padding-bottom:var(--u);
+  scrollbar-width:none;
+}
+.belt::-webkit-scrollbar{display:none}
+/* три панели должны влезать в ряд на десктопе целиком: обрезанная по краю
+   третья читается как недогруженная страница, а не как «листай дальше».
+   Замер: лента 996px внутри .page → 31.5% = 313px, три штуки с двумя
+   зазорами по 16px дают 971px и оставляют воздух */
+.belt-item{
+  flex:0 0 clamp(260px,31.5%,330px);scroll-snap-align:start;
+  background:var(--dark);border-radius:var(--r);overflow:hidden;
+  box-shadow:var(--sh), 0 30px 60px -22px rgba(var(--glow),.42);
+  display:flex;flex-direction:column;
+}
+/* Высота панели держится в пределах экрана намеренно. Была 210px арта плюс
+   четыре строки подписи — вся тройка не влезала в окно ноутбука целиком, и
+   при прокрутке верх панелей срезался краем экрана (хозяин поймал это
+   04.08.2026). Схема, которую нельзя увидеть вместе с её подписью, —
+   не схема. Теперь арт 158px и подпись в две строки: ряд помещается
+   в один взгляд. */
+.belt-art{position:relative;height:158px;flex:none;overflow:hidden}
+.belt-cap{padding:calc(var(--u)*2) calc(var(--u)*2.5) calc(var(--u)*2.5)}
+.belt-cap b{display:block;font-size:16px;font-weight:500;color:#fff;margin-bottom:5px}
+.belt-cap span{font-size:13px;line-height:1.4;color:rgba(255,255,255,.55)}
+
+/* 1 · автономность: три пары «вопрос — ответ» пробегают снизу вверх */
+.loop{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;
+      gap:6px;padding:calc(var(--u)*2)}
+.loop .msg{font-size:11px;padding:7px 10px;max-width:76%;opacity:0}
+.belt-item.live .loop .msg{animation:loopIn 9s var(--ease) infinite}
+.belt-item.live .loop .msg:nth-child(2){animation-delay:1.1s}
+.belt-item.live .loop .msg:nth-child(3){animation-delay:2.6s}
+.belt-item.live .loop .msg:nth-child(4){animation-delay:3.7s}
+@keyframes loopIn{
+  0%{opacity:0;transform:translateY(8px)}
+  8%,72%{opacity:1;transform:none}
+  84%,100%{opacity:0;transform:translateY(-6px)}
+}
+
+/* 2 · доставка и оплата: адрес → тариф → QR, по шагу за раз */
+.pay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+     gap:var(--u);padding:calc(var(--u)*2.5)}
+.pay-row{display:flex;align-items:center;gap:var(--u);opacity:.2;transition:opacity .5s var(--ease)}
+.pay-row b{font-family:'PT Mono',monospace;font-size:10px;color:rgba(255,255,255,.45);
+           width:52px;flex:none}
+.pay-row span{font-size:12px;color:#fff}
+.belt-item.live .pay-row{animation:payStep 7.5s var(--ease) infinite}
+.belt-item.live .pay-row:nth-child(2){animation-delay:1.6s}
+.belt-item.live .pay-row:nth-child(3){animation-delay:3.2s}
+@keyframes payStep{0%,4%{opacity:.2}12%,64%{opacity:1}80%,100%{opacity:.2}}
+.qr{width:44px;height:44px;flex:none;border-radius:4px;
+    background-image:
+      linear-gradient(90deg,#fff 25%,transparent 25% 50%,#fff 50% 62%,transparent 62%),
+      linear-gradient(#fff 18%,transparent 18% 40%,#fff 40% 55%,transparent 55% 78%,#fff 78%);
+  background-size:16px 16px;background-color:#111;
+  border:2px solid #fff;opacity:0}
+.belt-item.live .qr{animation:qrIn 7.5s var(--ease) infinite;animation-delay:4.4s}
+@keyframes qrIn{0%,4%{opacity:0;transform:scale(.9)}14%,58%{opacity:1;transform:none}72%,100%{opacity:0}}
+
+/* 3 · 152-ФЗ: живые данные на глазах превращаются в шифр */
+.crypt{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+       gap:calc(var(--u)*1.5);padding:calc(var(--u)*3)}
+.crypt-row{display:flex;align-items:center;gap:var(--u);font-size:12px}
+.crypt-row i{font-style:normal;color:rgba(255,255,255,.32);flex:none;width:14px;text-align:center}
+.crypt-row .pair{position:relative;display:inline-block;min-width:150px}
+.crypt-row .was{color:#fff}
+.belt-item.live .crypt-row .was{animation:cryptOut 6.5s steps(1) infinite}
+.belt-item.live .crypt-row:nth-child(2) .was{animation-delay:.5s}
+.belt-item.live .crypt-row:nth-child(3) .was{animation-delay:1s}
+@keyframes cryptOut{0%,34%{opacity:1}40%,92%{opacity:0}98%,100%{opacity:1}}
+.crypt-row .now{
+  position:absolute;left:0;top:0;white-space:nowrap;opacity:0;
+  font-family:'PT Mono',monospace;color:rgba(255,255,255,.5);letter-spacing:.06em;
+}
+.belt-item.live .crypt-row .now{animation:cryptIn 6.5s steps(1) infinite}
+.belt-item.live .crypt-row:nth-child(2) .now{animation-delay:.5s}
+.belt-item.live .crypt-row:nth-child(3) .now{animation-delay:1s}
+@keyframes cryptIn{0%,34%{opacity:0}40%,92%{opacity:1}98%,100%{opacity:0}}
+.crypt-law{position:absolute;right:calc(var(--u)*2);bottom:calc(var(--u)*1.5);
+           font-family:'PT Mono',monospace;font-size:10px;color:rgba(255,255,255,.35)}
+
+/* ======================================================================
+   .cards — остальные функции. Превью статичное; наведёшь — карточка
+   оживает и разворачивается поверх соседей, показывая микро-статью.
+   На весь экран разворота нет намеренно: мышь идёт через сетку насквозь,
+   и полноэкранная карточка перехватывала бы читателя по дороге к соседней.
+   Крупный разворот даёт тот же эффект и не дерётся с человеком.
+   ====================================================================== */
+/* Колонок ровно четыре, а не auto-fill: раскрытая карточка занимает две
+   колонки, и для этого надо знать, какая из них крайняя правая (иначе
+   разворот уедет за край страницы). При плавающем числе колонок вычислить
+   это в CSS нечем. */
+.cards{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:calc(var(--u)*1.5);margin:calc(var(--u)*5) 0 calc(var(--u)*7);
+}
+/* .card — это ячейка-место, она держит сетку и никогда не меняет размер.
+   Всё видимое живёт в .card-in, который лежит поверх ячейки и при наведении
+   растёт вниз. Без этого разделения раскрытая карточка тянула вверх всю
+   свою строку сетки, и соседи прыгали пустыми коробками. */
+/* В покое карточки — не плитки, а опись: тонкая линия сверху и текст под
+   ней. Сетка из семнадцати одинаковых белых коробок со скруглением и тенью
+   — самый узнаваемый вид типового лендинга, и на витрине, которая продаёт
+   штучную работу, он сразу выдаёт шаблон. Коробка появляется только под
+   курсором, вместе с микро-статьёй: тогда она не украшение, а ответ на
+   действие человека. */
+.card{position:relative;min-height:104px}
+.card-in{
+  position:absolute;left:0;right:0;top:0;min-height:100%;
+  /* в покое радиуса нет: скруглённая линия сверху даёт узнаваемые «усики»
+     по краям и читается как обрезанная коробка, а не как линия */
+  border:1px solid transparent;border-top-color:var(--line);border-radius:0;
+  padding:calc(var(--u)*2.5) calc(var(--u)*1.5);background:transparent;
+  transition:border-color .3s var(--ease), box-shadow .35s var(--ease),
+             transform .35s var(--ease), background .3s var(--ease),
+             padding .3s var(--ease), border-radius .3s var(--ease),
+             left .35s var(--ease), width .35s var(--ease);
+}
+.card-in b{font-size:15px;font-weight:500;display:block;margin-bottom:6px}
+.card-in em{font-style:normal;font-size:13px;color:var(--grey);line-height:1.45}
+/* сама микро-статья: в покое её нет ни в потоке, ни в высоте карточки */
+.card-in p{
+  margin-top:calc(var(--u)*1.5);font-size:14px;line-height:1.5;color:var(--ink);
+  max-height:0;opacity:0;overflow:hidden;
+  transition:max-height .4s var(--ease), opacity .3s var(--ease), margin-top .4s var(--ease);
+}
+.card:hover{z-index:3}
+/* Раскрытая карточка всегда выезжает В ЦЕНТР сетки — куда бы ни навели
+   (слово Саши 04.08.2026). До этого она росла вбок от своего места, и у
+   крайних колонок разворот уходил за край окна: человек наводил и видел
+   половину текста. Центр — единственная позиция, одинаково видимая из любой
+   колонки, и заодно единственная, где не надо гадать, в какую сторону расти.
+   Ширина разворота — две колонки: замер показал, что одна (~230px) рвёт
+   текст на строки в три слова.
+   Считается так: панель шириной 2 колонки в сетке из 4 начинается ровно на
+   границе второй, то есть в (W+g) от левого края сетки. Смещение для
+   карточки n — это (2−n)·(W+g), где 100% = ширина колонки. */
+.card:hover .card-in{
+  border-color:rgba(17,17,17,.10);
+  background:#fff;border-radius:12px;
+  padding:calc(var(--u)*2.5);
+  box-shadow:0 2px 8px rgba(17,17,17,.05), 0 26px 54px -18px rgba(var(--glow),.55);
+  transform:translateY(-2px);
+  right:auto;width:calc(200% + var(--u)*1.5);
+}
+.card:nth-child(4n+1):hover .card-in{left:calc(100% + var(--u)*1.5)}
+.card:nth-child(4n+2):hover .card-in{left:0}
+.card:nth-child(4n+3):hover .card-in{left:calc(-100% - var(--u)*1.5)}
+.card:nth-child(4n):hover   .card-in{left:calc(-200% - var(--u)*3)}
+.card:hover .card-in p{max-height:340px;opacity:1}
+
+/* Модификатор .cards.three — тот же приём на ряд из трёх карточек
+   (05.08.2026, раздел «в чём он нам помогает» на brain). Сетка на 4 колонки
+   тут не годится: три карточки в четырёх колонках оставляют дыру справа,
+   и ряд читается как недособранный.
+   Раскрытие снова в центр — правило Саши от 04.08.2026 общее, не про Пудру.
+   Арифметика для трёх колонок: панель шириной 2 колонки, центрированная в
+   ряду из 3, начинается в половине шага сетки — (W+g)/2 от левого края.
+   Смещение карточки n = (0,5 − (n−1))·(W+g), где 100% = ширина колонки W,
+   а g = gap = var(--u)*1.5.
+   Ставить эти правила ПОСЛЕ базовых nth-child(4n…) обязательно: у них
+   одинаковая специфичность, и при обратном порядке карточка 1 попадала бы
+   под правило 4n+1 и уезжала вправо на целую колонку. */
+.cards.three{grid-template-columns:repeat(3,1fr)}
+/* Раскрытая панель поднимается вверх, а не только растёт вниз (Саша,
+   05.08.2026: «сделай, чтобы карточки запускались немного наверх, так как
+   просто не видно другие»). Причина: ряд из трёх — последний блок страницы,
+   и панель, растущая вниз, накрывала абзац со ссылкой и уходила к нижней
+   кромке окна. Подъём разносит панель и соседей по вертикали.
+   Сдвиг в пикселях, а не в процентах: процент считается от высоты панели,
+   а она у трёх карточек разной длины — ряд бы «дышал».
+   Величина уточнена Сашей 05.08.2026: «прямо чтобы закрывал верхний текст,
+   так как всё равно сейчас читается именно карточка, а не текст наверху».
+   Это не про эстетику, а про внимание: пока панель открыта, читают её —
+   значит текст над ней в этот момент не работает, и честнее его закрыть,
+   чем оставлять полупрочитанным фоном. 96 px накрывают строку-подсказку и
+   низ абзаца над рядом.
+   Подсветка (цветная тень по --glow) здесь снята его же словами «давай без
+   подсветки». Нейтральная тень остаётся и обязана остаться: панель лежит
+   поверх текста, и без границы света они читались бы одним пятном. */
+.cards.three .card:hover .card-in{
+  width:calc(200% + var(--u)*1.5);
+  transform:translateY(-96px);
+  box-shadow:0 2px 8px rgba(17,17,17,.05), 0 24px 48px -20px rgba(17,17,17,.22);
+}
+.cards.three .card:nth-child(1):hover .card-in{left:calc(50% + var(--u)*.75)}
+.cards.three .card:nth-child(2):hover .card-in{left:calc(-50% - var(--u)*.75)}
+.cards.three .card:nth-child(3):hover .card-in{left:calc(-150% - var(--u)*2.25)}
+
+/* подпись под демо — не оправдание, а рамка честности: у настоящей Пудры
+   за спиной база клиента, здесь её нет */
+.demo-note{max-width:840px;margin:0 auto calc(var(--u)*9);
+           font-size:13px;color:var(--grey);text-align:center}
+
+/* ======================================================================
+   .org — две схемы рядом: «как принято» и «как у нас» (04.08.2026).
+   Это главный довод продукта, и словами он не доходит: все ставят ИИ
+   сбоку кусочками (чат с клиентом, видео, тексты), а решения по-прежнему
+   принимает человек — значит ИИ работает частью, а не головой. Мы ставим
+   его в центр. Разница между «сбоку» и «в центре» — это разница картинки,
+   а не абзаца, поэтому здесь схема, а не текст.
+   Разметка:
+   <div class="org">
+     <div class="org-side"><div class="org-art org-usual">…</div><b>…</b><span>…</span></div>
+     <div class="org-side"><div class="org-art org-ours">…</div><b>…</b><span>…</span></div>
+   </div>
+   ====================================================================== */
+.org{
+  display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--u)*3);
+  max-width:840px;margin:calc(var(--u)*6) auto calc(var(--u)*7);
+}
+.org-side b{display:block;font-size:15px;font-weight:500;margin:calc(var(--u)*2) 0 4px}
+.org-side span{font-size:14px;line-height:1.45;color:var(--grey)}
+.org-art{
+  position:relative;height:210px;border-radius:var(--r);overflow:hidden;
+  background:#EFEFEC;
+}
+/* контур компании — одинаковый в обеих схемах: сравнивать можно только то,
+   что различается одной вещью */
+.org-unit{
+  position:absolute;border-radius:6px;background:#fff;
+  border:1px solid rgba(17,17,17,.10);
+}
+.org-unit i{
+  position:absolute;left:8px;top:7px;right:8px;height:1px;
+  background:rgba(17,17,17,.14);box-shadow:0 5px 0 rgba(17,17,17,.09);
+  font-style:normal;
+}
+/* Место каждого отдела задано классом, а не порядком в разметке. Сначала
+   было через nth-child — и схема разъехалась в первой же сборке: nth-child
+   считает всех детей блока, а первым там лежит .checker, потом появился
+   ещё и svg. Порядковый номер в разметке — не место на схеме, и связывать
+   их значит ждать поломки при первой же вставке элемента.
+   — слева: ИИ прилеплен сбоку кусочками. Пунктир на метках тот же, что у
+     .slot и .step.later: язык необязательного, приставленного снаружи. */
+.org-usual .org-unit{width:36%;height:24%}
+.org-usual .u-tl{left:8%;top:14%}
+.org-usual .u-bl{left:8%;top:48%}
+.org-usual .u-tr{left:56%;top:14%}
+.org-usual .u-br{left:56%;top:48%}
+.org-chip{
+  position:absolute;font-family:'PT Mono',monospace;font-size:9px;
+  color:var(--grey);border:1px dashed rgba(17,17,17,.32);border-radius:4px;
+  padding:2px 5px;background:rgba(255,255,255,.7);
+}
+.org-usual .org-chip:nth-of-type(1){left:1%;top:40%}
+.org-usual .org-chip:nth-of-type(2){right:1%;top:78%}
+/* — справа: ядро в центре, от него связи ко всем отделам. Импульс бежит
+     по связи туда и обратно — это и есть «принимает решения», показанное
+     движением, а не обещанное словом */
+.org-ours .org-core{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:74px;height:34px;border-radius:8px;background:var(--dark);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'PT Mono',monospace;font-size:9px;color:#fff;letter-spacing:.04em;
+  z-index:2;
+}
+.org-ours .org-unit{width:30%;height:22%}
+.org-ours .u-tl{left:6%;top:12%}
+.org-ours .u-tr{right:6%;top:12%}
+.org-ours .u-bl{left:6%;bottom:12%}
+.org-ours .u-br{right:6%;bottom:12%}
+/* Связи ядра с отделами — inline SVG, а не повёрнутые div-полоски.
+   Первый заход был именно полосками с rotate: угол и длина у них считаются
+   от ширины блока, а ширина тут резиновая — на любом другом экране линии
+   промахивались мимо отделов. У SVG с viewBox геометрия задана раз и
+   тянется вместе с блоком.
+   Импульс — бегущий штрих (stroke-dashoffset), а не отдельная точка: это
+   ровно одна анимируемая величина на линию и никакой возни с координатами.
+   vector-effect держит толщину линии постоянной при растяжении. */
+.org-wire{position:absolute;inset:0;width:100%;height:100%}
+.org-wire line{stroke:rgba(17,17,17,.16);stroke-width:1;vector-effect:non-scaling-stroke}
+/* ⚠️ vector-effect у бегущей линии выключен намеренно: с non-scaling-stroke
+   штрих считается в экранных пикселях, а путь — в единицах viewBox, и
+   dashoffset перестаёт совпадать с длиной линии. Длина здесь 119 единиц
+   (от центра 180,105 до отдела ~76,48), отсюда и числа кадров. */
+.org-wire line.flow{
+  vector-effect:none;
+  stroke:var(--ink);stroke-width:2.5;stroke-linecap:round;
+  stroke-dasharray:8 400;stroke-dashoffset:8;opacity:0;
+}
+.org.live .org-wire line.flow{animation:orgFlow 3.6s var(--ease) infinite}
+.org.live .org-wire line.flow:nth-of-type(2){animation-delay:.45s}
+.org.live .org-wire line.flow:nth-of-type(3){animation-delay:.9s}
+.org.live .org-wire line.flow:nth-of-type(4){animation-delay:1.35s}
+@keyframes orgFlow{
+  0%{stroke-dashoffset:8;opacity:0}
+  8%{opacity:.85}
+  50%{stroke-dashoffset:-119;opacity:.85}
+  62%,100%{stroke-dashoffset:-119;opacity:0}
+}
+
+/* ======================================================================
+   .hands — «у него есть руки» (04.08.2026). Самое важное про специалиста
+   на витрине не говорилось вовсе: он не отвечает на вопросы, он делает
+   дела. Чат рассказывает, как оплатить; специалист считает доставку,
+   выставляет счёт, проверяет платёж и кладёт заказ в базу.
+   Показано выполнением: строки-инструменты по очереди отрабатывают и
+   гаснут в «сделано». Список тех же строк без движения читался бы как
+   перечень возможностей из брошюры — а это ровно то, чему не верят.
+   Ставится внутрь тёмной обложки .cov.
+   Разметка: <div class="hands"><div class="hand"><i></i><b>…</b><em>…</em></div>×N</div>
+   ====================================================================== */
+.hands{
+  position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+  padding:calc(var(--u)*4) clamp(24px,7%,64px);
+}
+/* строки-инструменты идут описью через тонкую линию — тот же приём, что у
+   .page ul: перечисление устройства, а не список покупок */
+.hand{
+  display:flex;align-items:center;gap:calc(var(--u)*2);
+  padding:calc(var(--u)*1.75) 0;border-bottom:1px solid rgba(255,255,255,.10);
+}
+.hand:last-child{border-bottom:0}
+.hand i{
+  flex:none;width:10px;height:10px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.35);background:transparent;
+}
+.hand b{font-size:16px;font-weight:400;color:rgba(255,255,255,.5)}
+.hand em{
+  font-style:normal;font-family:'PT Mono',monospace;font-size:12px;
+  color:rgba(255,255,255,.42);margin-left:auto;opacity:0;text-align:right;
+}
+/* Каждая строка занимает свою секунду цикла: сначала загорается точка —
+   инструмент работает, — потом справа встаёт результат. Задержка задаётся
+   переменной, как в неделе: правило одно на всех, число одно на строку. */
+.hand{--d:0s}
+.hand:nth-child(2){--d:1.4s}
+.hand:nth-child(3){--d:2.8s}
+.hand:nth-child(4){--d:4.2s}
+.hand:nth-child(5){--d:5.6s}
+.cov.live .hand i{animation:handOn 8s var(--ease) infinite;animation-delay:var(--d)}
+.cov.live .hand b{animation:handTxt 8s var(--ease) infinite;animation-delay:var(--d)}
+.cov.live .hand em{animation:handRes 8s var(--ease) infinite;animation-delay:calc(var(--d) + .5s)}
+@keyframes handOn{
+  0%,2%{background:transparent;border-color:rgba(255,255,255,.35)}
+  6%,88%{background:#fff;border-color:#fff}
+  94%,100%{background:transparent;border-color:rgba(255,255,255,.35)}
+}
+@keyframes handTxt{
+  0%,2%{color:rgba(255,255,255,.5)}
+  6%,88%{color:#fff}
+  94%,100%{color:rgba(255,255,255,.5)}
+}
+@keyframes handRes{0%,2%{opacity:0}8%,88%{opacity:1}94%,100%{opacity:0}}
+
+/* ======================================================================
+   .week — неделя компании (04.08.2026). Продукт заявляет вещь, которую
+   легко сказать и трудно доказать: «план есть у всех, но к среде он
+   мёртв». Неделя показывает обратное движением — дела закрываются по
+   дням сами, а в пятницу приходит разбор. Ни одна строка текста этого
+   не делает: словам про «живой организм» верят ровно до первой брошюры,
+   где написано то же самое.
+   Разметка: <div class="week"><div class="wk-day"><b>пн</b><i></i>…</div>×7</div>
+   ====================================================================== */
+.week{
+  display:grid;grid-template-columns:repeat(7,1fr);gap:var(--u);
+  max-width:840px;margin:calc(var(--u)*6) auto calc(var(--u)*3);
+}
+.wk-day{
+  --d:0s;                       /* когда наступает этот день в цикле */
+  background:#EFEFEC;border-radius:8px;padding:calc(var(--u)*1.5) var(--u);
+  min-height:158px;display:flex;flex-direction:column;gap:6px;
+}
+.wk-day b{
+  font-family:'PT Mono',monospace;font-weight:400;font-size:11px;
+  color:var(--grey);margin-bottom:4px;
+}
+/* дело: полоска. Открытое — контур, закрытое — заливка. Тот же язык
+   пустого и занятого места, что у .sh-row на графике смен */
+.wk-day i{
+  display:block;height:11px;border-radius:3px;
+  border:1px solid rgba(17,17,17,.18);background:transparent;
+}
+/* Задержка собирается из двух частей: день задаёт --d, дело внутри дня
+   добавляет свой сдвиг. Раньше вторая и третья полоски стояли на
+   `animation-delay:inherit` — а inherit берёт значение у родителя, у
+   которого задержки нет вовсе: все дела дня закрывались разом, одним
+   щелчком. Переменная делает то, чего от inherit ошибочно ждали. */
+.week.live .wk-day{}
+.week.live .wk-day:nth-child(1){--d:.5s}
+.week.live .wk-day:nth-child(2){--d:1.9s}
+.week.live .wk-day:nth-child(3){--d:3.3s}
+.week.live .wk-day:nth-child(4){--d:4.7s}
+.week.live .wk-day:nth-child(5){--d:6.1s}
+.week.live .wk-day i{animation:wkDone 13s steps(1) infinite;animation-delay:var(--d)}
+.week.live .wk-day i:nth-of-type(2){animation-delay:calc(var(--d) + .35s)}
+.week.live .wk-day i:nth-of-type(3){animation-delay:calc(var(--d) + .7s)}
+@keyframes wkDone{
+  0%,4%{background:transparent;border-color:rgba(17,17,17,.18)}
+  8%,93%{background:var(--ink);border-color:var(--ink)}
+  97%,100%{background:transparent;border-color:rgba(17,17,17,.18)}
+}
+/* суббота и воскресенье пустые намеренно: мозг не изображает работу там,
+   где её нет, и не обещает «24/7 без выходных» — это язык рекламы, а не
+   управления */
+.wk-day.off{background:transparent;border:1px dashed rgba(17,17,17,.20)}
+.wk-day.off b{opacity:.55}
+/* Метка дня — не дело, а событие недели: в понедельник её ставят, в
+   пятницу закрывают разбором. Появляется в свой момент и держится до
+   конца цикла */
+.wk-mark{
+  margin-top:auto;font-size:10px;line-height:1.25;color:var(--ink);
+  opacity:0;
+}
+.week.live .wk-mark{animation:wkMark 13s steps(1) infinite;animation-delay:var(--d)}
+@keyframes wkMark{0%,3%{opacity:0}6%,93%{opacity:1}97%,100%{opacity:0}}
+
+@media (prefers-reduced-motion:reduce){.d-c.on .pulse{animation:none}}
+@media (max-width:560px){
+  .page{padding:calc(var(--u)*7) calc(var(--u)*3) calc(var(--u)*10)}
+  .page p{font-size:17px}
+  /* На узком экране обложка держит 16/9 и при ширине контента 342 px даёт
+     всего 192 px высоты — схеме с ядром в три строки и рядом отделов там
+     тесно: замер показал, что низ ячеек заходит на строку штампа на 3 px.
+     Пропорция 3/2 добавляет 36 px и снимает тесноту разом на всех страницах
+     с обложкой, а не заплаткой на одной. */
+  .cov{aspect-ratio:3/2}
+  .dia{padding:calc(var(--u)*2.5) calc(var(--u)*2.5) calc(var(--u)*5)}
+  .d-row{gap:6px}
+  .d-c{padding:var(--u) 6px;min-height:56px;font-size:10px}
+  .msg{max-width:82%}
+  .tiles,.nums{grid-template-columns:1fr 1fr}
+  .steps{flex-direction:column}
+  .step + .step{margin-left:0;margin-top:calc(var(--u)*4)}
+  .step + .step::before{left:50%;top:calc(var(--u)*-4);width:1px;height:calc(var(--u)*3);transform:translateX(-50%)}
+  .step + .step::after{left:50%;top:-9px;transform:translateX(-50%);
+    border:4px solid transparent;border-left-color:transparent;border-top-color:var(--line)}
+  .page li{grid-template-columns:1fr;gap:4px;padding:calc(var(--u)*1.75) 0}
+  .page li span{font-size:16px}
+  /* Проверила на реальной ширине контента узкого экрана (342px = 390 минус
+     мобильные поля) — две колонки не рвутся и не путаются, но самые длинные
+     пары («логика решений не привязана к одному человеку») растут на 4
+     строки в половинной колонке: плотно, гуще, чем сам смысл требует.
+     Заголовок «Было/Стало» короткий и в двух колонках держится свободно —
+     трогаю только ряды: они несут предложения, как .step, а не слова, как
+     .tile/.num, и по той же причине складываются в один столбец. */
+  .axis-head{font-size:11px}
+  .axis-row{grid-template-columns:1fr;gap:calc(var(--u));padding:calc(var(--u)*2.5) 0}
+  .axis-was{font-size:13px}
+  .axis-now{font-size:16px;margin-top:calc(var(--u)/2)}
+  .demo{height:400px}
+  .demo-chat{padding:calc(var(--u)*3) calc(var(--u)*2.5) calc(var(--u)*2)}
+}
+
+/* Карточки: четыре колонки только на широком экране. Ниже — две и одна, и
+   там разворот вширь отменяется вовсе: на узком экране расти некуда, а
+   микро-статья просто раскрывается вниз. */
+@media (max-width:900px){
+  .cards{grid-template-columns:repeat(2,1fr)}
+  /* две колонки: разворот шириной в обе — то есть от левого края сетки.
+     Правила по модулю 4 здесь врут (в двух колонках 3-я карточка снова
+     первая в строке), поэтому считаем по чётности */
+  .card:nth-child(2n+1):hover .card-in{left:0}
+  .card:nth-child(2n):hover .card-in{left:calc(-100% - var(--u)*1.5)}
+  /* Модификатор .three приходится гасить явно: у него специфичность (0,2,0)
+     против (0,1,0) у .cards, а медиазапрос специфичность не повышает — без
+     этих строк ряд из трёх остался бы трёхколоночным и на 390 px. Та же
+     причина для позиций: правила .cards.three выше сильнее чётных. */
+  .cards.three{grid-template-columns:repeat(2,1fr)}
+  .cards.three .card:nth-child(1):hover .card-in{left:0}
+  .cards.three .card:nth-child(2):hover .card-in{left:calc(-100% - var(--u)*1.5)}
+  .cards.three .card:nth-child(3):hover .card-in{left:0}
+}
+/* Панель инструментов на узком экране. Обложка держит пропорцию 16/9, и на
+   390px это 219px высоты — пять строк по 50px туда не влезали, верхняя
+   уезжала за край. Проверено на стенде 04.08.2026: строки ужимаются, а
+   результат справа («490 ₽», «оплачено») прячется — в колонке 340px он
+   отъедал половину строки у названия самого действия. */
+@media (max-width:640px){
+  .hands{padding:calc(var(--u)*2) calc(var(--u)*2.5)}
+  .hand{padding:calc(var(--u)*1) 0;gap:var(--u)}
+  .hand i{width:8px;height:8px}
+  .hand b{font-size:13px;line-height:1.3}
+  .hand em{display:none}
+}
+/* Схема отделов: в четырёх колонках по 78px длинные слова («Автоматизация»,
+   «Юридический») упирались в край ячейки и обрезались. Перенос по слогам
+   для них честнее сокращений — название отдела должно читаться целиком. */
+@media (max-width:560px){
+  .d-c{hyphens:auto;word-break:break-word;line-height:1.25}
+  /* Обложка-переписка: на 390px её высота падает до 219px, и нижняя реплика
+     наползала на штамп в углу. Реплики ужимаются, а низ обложки получает
+     поле под подпись. */
+  .cov .chat{padding:calc(var(--u)*2.5) calc(var(--u)*2.5) calc(var(--u)*5);gap:6px}
+  .cov .chat .msg{font-size:12px;padding:var(--u) calc(var(--u)*1.5)}
+}
+/* График смен на телефоне: ячейка 26px в семи колонках не оставляла места
+   подписи позиции, и «хостес» наезжал на штамп обложки. */
+@media (max-width:560px){
+  .shift{padding:calc(var(--u)*2) calc(var(--u)*2)}
+  .sh-row{grid-template-columns:38px repeat(7,1fr);gap:4px}
+  .sh-row i{height:18px;border-radius:4px}
+  .sh-row b{font-size:9px}
+  .sh-head span{font-size:8px}
+}
+/* Схема-сравнение на узком экране складывается в столбик: две схемы рядом
+   по 160px превращаются в две марки, где не разглядеть ни ядра, ни связей —
+   а вся их работа именно в том, чтобы разницу было видно. */
+@media (max-width:720px){
+  .org{grid-template-columns:1fr;gap:calc(var(--u)*4)}
+  .org-art{height:190px}
+}
+/* Неделя остаётся неделей и на телефоне: семь колонок — это её смысл, а не
+   раскладка. Ужимаются поля и подписи, дела становятся тоньше. Разбор в
+   пятницу прячем — в колонке 40px его не прочесть, а обрубок слова хуже
+   его отсутствия. */
+@media (max-width:640px){
+  .week{gap:4px}
+  .wk-day{padding:6px 4px;min-height:104px;gap:4px;border-radius:6px}
+  .wk-day b{font-size:9px}
+  .wk-day i{height:7px}
+  .wk-mark{display:none}
+}
+@media (max-width:560px){
+  .cards,.cards.three{grid-template-columns:1fr}
+  .card:hover .card-in,
+  .card:nth-child(2n+1):hover .card-in,
+  .card:nth-child(2n):hover .card-in,
+  .cards.three .card:hover .card-in{left:0;right:0;width:auto}
+  .belt-item{flex:0 0 84%}
+}
+/* Сенсорному экрану наведение недоступно — там микро-статьи открыты всегда:
+   лучше длинная страница, которую можно прочесть, чем красивый механизм,
+   который на телефоне не работает вовсе. */
+@media (hover:none){
+  .card{min-height:0}
+  .card-in{position:static}
+  .card-in p{max-height:none;opacity:1}
+  /* строка «карточки раскрываются» на телефоне была бы враньём: там они
+     уже раскрыты */
+  .note-hint{display:none}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ПЕРВЫЙ ЭКРАН ПРОДУКТОВОЙ СТРАНИЦЫ · 05.08.2026
+   Слово Саши: «а может быть его сделать вообще в стиле основной страницы,
+   сначала надпись, а потом только блоки начинаются, и появляются
+   поочереди текста».
+
+   Почему это уместно именно у продукта. Все остальные внутренние страницы —
+   записи: у них дело уже сделано, и они его показывают, поэтому начинаются
+   заголовком и сразу обложкой. Продукт же ещё ничего не показал, и первое,
+   что человек должен получить, — не устройство вещи, а её обещание. Одна
+   фраза во весь экран и есть это обещание.
+
+   Механика перенесена с главной намеренно, теми же числами (периоды дыхания
+   17/23/29/37 с — простые, чтобы циклы не сходились). Держать два разных
+   первых экрана на одном сайте нельзя: человек приходит на продукт с главной
+   и должен узнать дом, а не попасть в чужой.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Общий верхний свет страницы гасим там, где стоит герой: у него свои
+   четыре пятна, и вместе получалось пять — вдвое больше нормы (не больше
+   трёх на страницу, whoopy-site:site-look). */
+body:has(.phero)::before{display:none}
+
+.phero{
+  position:relative;min-height:100svh;isolation:isolate;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:calc(var(--u)*10) calc(var(--u)*4);
+  margin-bottom:calc(var(--u)*4);
+}
+/* Ширина в пикселях, а не в ch: обе строки обещания должны стоять каждая
+   одной строкой, а они разной длины (22 и 30 знаков). Лимит в ch считается
+   от кегля и подрезал бы то одну, то другую при каждом изменении размера. */
+.phero h1{
+  font-size:clamp(30px,4.8vw,54px);line-height:1.1;max-width:920px;
+}
+/* Вторая строка обещания приходит отдельно и позже первой: это не украшение,
+   а смысл — сначала человек читает про себя («усиляйте своё сильное»), и
+   только потом узнаёт, кто возьмёт остальное. Обе строки сразу — и мысль
+   схлопывается в один слоган. */
+.phero h1 .l2{display:block;color:var(--grey)}
+.phero .sub{
+  margin-top:calc(var(--u)*4);max-width:52ch;
+  font-size:clamp(16px,1.6vw,19px);line-height:1.5;color:var(--grey);
+}
+.phero .kind{margin-bottom:calc(var(--u)*3)}
+
+/* Свет первого экрана — четыре дышащих пятна, как на главной. */
+.orbs{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.orb{position:absolute;border-radius:50%;will-change:opacity,transform}
+.orb.o1{
+  width:clamp(560px,64vw,1080px);height:clamp(300px,32vw,540px);right:-14%;top:-6%;
+  background:radial-gradient(50% 50% at 50% 50%,
+    rgba(166,119,207,.52) 0%,rgba(166,119,207,.38) 24%,
+    rgba(166,119,207,.20) 46%,rgba(166,119,207,.07) 64%,rgba(166,119,207,0) 78%);
+  animation:breathe-a 17s var(--ease) infinite;
+}
+.orb.o2{
+  width:clamp(380px,44vw,760px);height:clamp(240px,26vw,440px);left:-10%;bottom:6%;
+  background:radial-gradient(50% 50% at 50% 50%,
+    rgba(119,171,207,.66) 0%,rgba(119,171,207,.48) 24%,
+    rgba(119,171,207,.27) 46%,rgba(119,171,207,.09) 64%,rgba(119,171,207,0) 78%);
+  animation:breathe-b 23s var(--ease) infinite;
+}
+.orb.o3{
+  width:clamp(260px,30vw,520px);height:clamp(180px,20vw,340px);right:14%;bottom:18%;
+  background:radial-gradient(50% 50% at 50% 50%,
+    rgba(214,180,140,.68) 0%,rgba(214,180,140,.48) 26%,
+    rgba(214,180,140,.26) 48%,rgba(214,180,140,0) 76%);
+  animation:breathe-c 29s var(--ease) infinite;
+}
+.orb.o4{
+  width:clamp(320px,36vw,620px);height:clamp(200px,22vw,380px);left:-10%;top:34%;
+  background:radial-gradient(50% 50% at 50% 50%,
+    rgba(207,187,119,.74) 0%,rgba(207,187,119,.54) 24%,
+    rgba(207,187,119,.30) 46%,rgba(207,187,119,.12) 64%,rgba(207,187,119,0) 78%);
+  animation:breathe-d 37s var(--ease) infinite;
+}
+@keyframes breathe-a{
+  0%,100%{opacity:.30;transform:rotate(-17deg) translate(0,0)}
+  50%{opacity:1;transform:rotate(-13deg) translate(-26px,18px)}
+}
+@keyframes breathe-b{
+  0%,100%{opacity:.34;transform:rotate(9deg) translate(0,0)}
+  50%{opacity:.94;transform:rotate(13deg) translate(22px,-16px)}
+}
+@keyframes breathe-c{
+  0%,100%{opacity:.40;transform:rotate(-6deg) translate(0,0)}
+  50%{opacity:1;transform:rotate(-2deg) translate(-14px,-20px)}
+}
+@keyframes breathe-d{
+  0%,100%{opacity:.40;transform:rotate(11deg) translate(0,0)}
+  50%{opacity:1;transform:rotate(7deg) translate(18px,22px)}
+}
+
+.scroll-hint{
+  position:absolute;bottom:calc(var(--u)*5);left:50%;transform:translateX(-50%);
+  width:1px;height:44px;background:var(--line);overflow:hidden;
+}
+.scroll-hint::after{
+  content:'';position:absolute;inset:0;background:var(--ink);
+  animation:flow 2.6s var(--ease) infinite;
+}
+@keyframes flow{0%{transform:translateY(-100%)}60%,100%{transform:translateY(100%)}}
+
+/* ── Появление вылетом ─────────────────────────────────────────────────
+   Тот же класс и те же числа, что на главной: .rev + задержка --d.
+   Наблюдатель — в page.js. */
+html.js .rev{
+  opacity:0;transform:translateY(34px);
+  transition:opacity .75s var(--ease),transform .75s var(--ease);
+  transition-delay:var(--d,0s);
+}
+/* ⚠️ Префикс html.js обязателен и здесь. Он не для красоты: скрывающее
+   правило выше стоит на html.js .rev, и без такого же префикса показывающее
+   весит меньше — класс .in навешивается наблюдателем, но не действует, и
+   текст остаётся невидимым навсегда. Сломалось ровно так 06.08.2026, когда
+   я обернула скрытие в html.js и не подняла показ следом. */
+html.js .rev.in{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  html.js .rev{opacity:1;transform:none;transition:none}
+  .orb,.scroll-hint::after{animation:none}
+  /* Просивший систему не двигаться получает чертёж, а не кино: все живые
+     схемы замирают в своём конечном виде, а не в начальном — иначе лента
+     ночи и сетка дел остались бы пустыми. Найдено судьёй 06.08.2026:
+     под настройку уходили только орбы и появление блоков. */
+  .mind.live .mind-grid span:not(.own),
+  .mind.live .mind-grid span.own,
+  .night.live .nt-row,
+  .bench.live .bn-row i{animation:none}
+  .mind.live .mind-grid span:not(.own){color:#C9C9C4;border-color:#F0F0EC}
+  .night .nt-row{opacity:1;transform:none}
+  .bn-row i{transform:scaleX(1)}
+}
+
+/* ── Голова владельца ──────────────────────────────────────────────────
+   Главный блок страницы продукта, и он не про продукт, а про читателя.
+   Пятнадцать дел, которые владелец держит в голове, и одно — то, ради
+   чего он всё начал. При появлении на экране чужие дела гаснут по
+   очереди, его собственное остаётся чёрным.
+
+   Почему гаснут, а не исчезают: дела никуда не деваются, они перестают
+   быть его. Пропавшая плашка соврала бы. */
+/* Ширина ровно по колонке текста (620), а не «чуть шире»: сетка стоит между
+   двумя абзацами, и промежуточная ширина читается как съехавший блок, а не
+   как отдельная вещь. Либо в колонку, либо явно шире — среднего нет. */
+.mind{
+  margin:calc(var(--u)*5) auto calc(var(--u)*3);max-width:620px;
+}
+.mind-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:var(--u);
+}
+.mind-grid span{
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  min-height:56px;padding:var(--u) calc(var(--u)*1.5);
+  border:1px solid var(--line);border-radius:var(--r-s,8px);
+  font-size:14px;line-height:1.25;color:var(--ink);background:#fff;
+  transition:color .45s var(--ease),border-color .45s var(--ease);
+}
+.mind.live .mind-grid span:not(.own){
+  animation:mind-fade .75s var(--ease) forwards;
+  animation-delay:calc(var(--i,0)*.08s + .5s);
+}
+@keyframes mind-fade{
+  to{color:#C9C9C4;border-color:#F0F0EC}
+}
+/* Своё дело не просто остаётся — оно наливается: тот же приём, что у
+   пустоты в схеме недели. Разница видна не потому, что подписана. */
+.mind-grid span.own{
+  border-color:var(--ink);font-weight:500;
+  transition:box-shadow .75s var(--ease);
+}
+.mind.live .mind-grid span.own{
+  animation:mind-own .75s var(--ease) forwards;animation-delay:1.5s;
+}
+@keyframes mind-own{
+  to{box-shadow:0 2px 6px rgba(17,17,17,.06),0 14px 30px rgba(17,17,17,.10)}
+}
+.mind-note{
+  max-width:620px;margin:calc(var(--u)*3) auto calc(var(--u)*7);
+  text-align:center;font-size:17px;line-height:1.5;color:var(--grey);
+}
+.mind-note b{color:var(--ink);font-weight:500}
+
+@media (max-width:720px){
+  .mind-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:460px){
+  .mind-grid{grid-template-columns:repeat(2,1fr);gap:var(--u)}
+  .mind-grid span{min-height:48px;font-size:13px}
+}
+
+/* ── Ночь ──────────────────────────────────────────────────────────────
+   Главный блок страницы специалиста, 05.08.2026. У страницы мозга такой
+   блок показывает голову владельца; здесь — его ночь.
+
+   Почему именно ночь. Боль нашего покупателя, названная им самим, — «не
+   успеваю, постоянно». Список умений на этот довод не отвечает: он
+   рассказывает про вещь. Лента времени отвечает — она показывает часы,
+   в которые владельца просто не было, а работа шла.
+
+   Блок тёмный. Это единственное место сайта, где темнота значит буквально
+   то, что изображает, а не «акцентный блок». Последняя строка светлая:
+   утро, владелец открывает телефон.
+
+   Время моноширинным — по общему языку сайта: PT Mono значит «записано
+   машиной», и здесь это правда, отметки ставил не человек. */
+.night{
+  margin:calc(var(--u)*5) auto calc(var(--u)*3);max-width:620px;
+  background:var(--dark);border-radius:var(--r);box-shadow:var(--sh);
+  padding:calc(var(--u)*4) calc(var(--u)*4) calc(var(--u)*3);
+  position:relative;overflow:hidden;
+}
+.night .grid-bg{position:absolute;inset:0;opacity:.5}
+.nt-row{
+  position:relative;display:grid;grid-template-columns:64px 1fr;
+  gap:calc(var(--u)*2);align-items:baseline;
+  padding:calc(var(--u)*1.5) 0;
+  border-bottom:1px solid rgba(255,255,255,.10);
+  opacity:0;transform:translateY(8px);
+}
+.nt-row:last-child{border-bottom:0}
+.night.live .nt-row{
+  animation:nt-in .45s var(--ease) forwards;
+  animation-delay:calc(var(--i,0)*.5s + .3s);
+}
+@keyframes nt-in{to{opacity:1;transform:none}}
+.nt-row b{
+  font-family:var(--font-mono,'PT Mono',monospace);font-size:13px;font-weight:400;
+  color:rgba(255,255,255,.45);letter-spacing:.02em;
+}
+.nt-row span{font-size:16px;line-height:1.45;color:rgba(255,255,255,.82)}
+/* Утро: строка владельца. Светлее остальных — не потому что важнее, а
+   потому что это уже день. */
+.nt-row.dawn{margin-top:calc(var(--u)*1.5);border-top:1px solid rgba(255,255,255,.18);padding-top:calc(var(--u)*2.5)}
+.nt-row.dawn b{color:rgba(255,255,255,.85)}
+.nt-row.dawn span{color:#fff}
+.night-note{
+  max-width:620px;margin:0 auto calc(var(--u)*7);
+  text-align:center;font-size:17px;line-height:1.5;color:var(--grey);
+}
+.night-note b{color:var(--ink);font-weight:500}
+
+@media (max-width:560px){
+  .night{padding:calc(var(--u)*3) calc(var(--u)*2.5)}
+  .nt-row{grid-template-columns:52px 1fr;gap:var(--u)}
+  .nt-row b{font-size:12px}
+  .nt-row span{font-size:15px}
+}
+
+/* ── Первый экран страницы специалиста: слово и работа ─────────────────
+   05.08.2026, поправка Саши: «нужно какое-то отличие от первой страницы,
+   придумай его». Он прав — и то же самое независимо сказал судья по первым
+   экранам: два продукта подряд с одинаковым центрированным героем читались
+   как одна страница, показанная дважды.
+
+   Отличие сделано смысловое, а не косметическое:
+
+     мозг       — вход тишиной. Пустой экран, одна фраза, свет, воздух.
+                  Это про размах и про самого читателя.
+     специалист — вход работой. Слева слово, справа его ночь, уже идущая.
+                  Специалист не идея, а работник: его страница начинается
+                  не с обещания, а с дела.
+
+   Отсюда всё остальное: заголовок мельче (колонка уже), выравнивание по
+   левому краю вместо центра, свет убран совсем — контраст держит тёмная
+   панель, и пятна рядом с ней стали бы шумом. */
+.phero.split{
+  min-height:auto;padding:calc(var(--u)*8) calc(var(--u)*4) calc(var(--u)*6);
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);
+  gap:calc(var(--u)*7);align-items:center;text-align:left;
+  max-width:1180px;margin:0 auto calc(var(--u)*2);
+}
+.phero.split .ph-word{max-width:34ch}
+/* Кегль подобран так, чтобы обе строки заголовка вставали по одной на
+   строку в колонке 34ch: на 42px «У направления есть хозяин.» ломалось
+   надвое и заголовок разъезжался на четыре строки. */
+.phero.split h1{
+  font-size:clamp(26px,2.8vw,36px);line-height:1.16;max-width:none;
+}
+.phero.split .sub{margin-top:calc(var(--u)*3);max-width:38ch;font-size:17px}
+.phero.split .kind{margin-bottom:calc(var(--u)*2)}
+/* Лента в первом экране идёт без внешних полей: её поля держит сетка. */
+.phero.split .night{margin:0;max-width:none}
+.phero.split .night-cap{
+  margin:calc(var(--u)*2) 0 0;font-size:14px;color:var(--grey);text-align:left;
+}
+.phero.split .night-cap a{color:var(--grey)}
+
+@media (max-width:900px){
+  .phero.split{
+    grid-template-columns:1fr;gap:calc(var(--u)*4);
+    padding:calc(var(--u)*6) calc(var(--u)*3) calc(var(--u)*4);
+  }
+  .phero.split .ph-word{max-width:none}
+  .phero.split .sub{max-width:none}
+}
+
+/* ── Замеры силы моделей ───────────────────────────────────────────────
+   05.08.2026, просьба Саши: сказать, насколько сильны нынешние модели и
+   что они уже могут быть полноценным участником компании.
+
+   Показано шкалой, а не абзацем: у читателя на этом месте один вопрос —
+   «а оно вообще потянет?», и на него отвечают числа, которые можно
+   проверить, а не наши прилагательные.
+
+   Вторая шкала (незнакомые задачи, где человек пока впереди) снята
+   06.08.2026 по слову Саши. Разметка .bn это выдерживает — блок
+   рассчитан на любое число шкал, включая одну. */
+.bench{margin:calc(var(--u)*5) auto calc(var(--u)*3);max-width:620px}
+.bn{margin-bottom:calc(var(--u)*4)}
+.bn:last-child{margin-bottom:0}
+.bn > b{display:block;font-size:17px;font-weight:500;margin-bottom:4px}
+.bn-note{display:block;font-size:14px;line-height:1.45;color:var(--grey);margin-bottom:calc(var(--u)*2)}
+.bn-row{
+  display:grid;grid-template-columns:150px 1fr 62px;gap:calc(var(--u)*1.5);
+  align-items:center;padding:5px 0;
+}
+.bn-row em{font-style:normal;font-size:14px;color:var(--grey)}
+.bn-row i{
+  display:block;height:8px;border-radius:4px;background:var(--line);
+  width:var(--w);transform-origin:left;transform:scaleX(0);
+}
+.bench.live .bn-row i{animation:bn-grow .75s var(--ease) forwards;animation-delay:calc(var(--i,0)*.12s)}
+@keyframes bn-grow{to{transform:scaleX(1)}}
+.bn-row u{
+  text-decoration:none;font-family:var(--font-mono,'PT Mono',monospace);
+  font-size:13px;color:var(--grey);text-align:right;
+}
+/* Наша строка — чёрная: не «лучше», а «та, о которой речь». */
+.bn-row.on em,.bn-row.on u{color:var(--ink)}
+.bn-row.on i{background:var(--ink)}
+.bench-src{
+  max-width:620px;margin:0 auto calc(var(--u)*6);
+  font-size:13px;color:var(--grey);
+}
+@media (max-width:560px){
+  .bn-row{grid-template-columns:1fr;gap:4px;padding:calc(var(--u)*1) 0}
+  .bn-row u{text-align:left}
+  .bn-row i{width:var(--w)}
+}
