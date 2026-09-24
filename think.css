@@ -1,0 +1,61 @@
+/* Разборы «Что думаем» — оформление статьи. Правка Саши 24.09.2026:
+   «статьи бы внутри более интересно оформить». Поверх page.css, ничего
+   в нём не меняя: другие страницы-записи живут как жили.
+   Что добавлено: та же фигура из частиц, что на карточке главной, — шапкой
+   статьи (карточка и страница одна вещь); полоса прочитанного; номера
+   разделов; первая фраза крупнее; выноска — главная мысль, а не сноска;
+   внизу — следующий разбор. */
+.progress{position:fixed;top:0;left:0;height:3px;width:100%;z-index:60;pointer-events:none;
+  transform-origin:0 50%;transform:scaleX(0);
+  background:linear-gradient(90deg,rgba(187,119,207,.9),rgba(90,194,246,.9))}
+
+.ahero{position:relative;max-width:860px;margin:0 auto calc(var(--u)*5);aspect-ratio:21/9;
+  background:#0E0E10;border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.ahero canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.ahero .grid-bg,.nx-shot .grid-bg{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:24px 24px}
+
+.page > .read{max-width:620px;margin:calc(var(--u)*2.5) auto calc(var(--u)*5);
+  font-family:'PT Mono',monospace;font-size:13px;color:var(--grey);display:flex;gap:14px;flex-wrap:wrap}
+.page > .read span + span::before{content:'·';margin-right:14px}
+
+.page > p.first{font-size:22px;line-height:1.5;color:var(--ink);letter-spacing:-.005em}
+
+.page{counter-reset:part}
+.page > h2{position:relative;padding-top:calc(var(--u)*4);border-top:1px solid var(--line)}
+.page > h2::before{counter-increment:part;content:counter(part,decimal-leading-zero);
+  display:block;margin-bottom:calc(var(--u)*1.25);
+  font-family:'PT Mono',monospace;font-size:13px;font-weight:400;color:rgb(187,119,207)}
+
+.page > .pull{position:relative;font-size:clamp(22px,2.6vw,28px);line-height:1.35;letter-spacing:-.015em;
+  color:var(--grey);border-left:0;padding:calc(var(--u)*4) 0 calc(var(--u)*4) calc(var(--u)*4)}
+.page > .pull::before{content:'';position:absolute;left:0;top:calc(var(--u)*4);bottom:calc(var(--u)*4);width:3px;border-radius:3px;
+  background:linear-gradient(180deg,rgb(187,119,207),rgb(90,194,246))}
+.page > .pull b{color:var(--ink)}
+
+/* абзацы проявляются по ходу чтения — тихо, 14 px и полсекунды */
+html.js .page > p,html.js .page > h2,html.js .page > .pull{transition:opacity .6s var(--ease),transform .6s var(--ease)}
+html.js .page > .hide{opacity:0;transform:translateY(14px)}
+
+.nx{max-width:620px;margin:calc(var(--u)*10) auto 0;padding-top:calc(var(--u)*3);border-top:1px solid var(--line)}
+.nx small{display:block;font-size:13px;color:var(--grey);margin-bottom:calc(var(--u)*2)}
+.nx a{display:grid;grid-template-columns:160px 1fr;gap:calc(var(--u)*3);align-items:center;color:var(--ink);text-decoration:none}
+.nx-shot{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;background:#0E0E10;box-shadow:var(--sh);
+  transition:transform .3s var(--ease)}
+.nx-shot canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.nx a:hover .nx-shot{transform:translateY(-4px)}
+.nx b{display:block;font-size:22px;font-weight:500;line-height:1.25;letter-spacing:-.015em}
+.nx span{display:block;margin-top:8px;font-size:16px;color:var(--grey);line-height:1.45}
+.nx em{display:inline-block;margin-top:12px;font-style:normal;font-size:16px}
+.nx em::after{content:' →';transition:margin .25s var(--ease)}
+.nx a:hover em::after{margin-left:4px}
+
+@media (max-width:640px){
+  .ahero{aspect-ratio:4/3;margin-bottom:calc(var(--u)*4)}
+  .page > p.first{font-size:19px}
+  .nx a{grid-template-columns:96px 1fr;gap:calc(var(--u)*2)}
+  .nx b{font-size:18px}
+}
+@media (prefers-reduced-motion:reduce){ html.js .page > .hide{opacity:1;transform:none} }

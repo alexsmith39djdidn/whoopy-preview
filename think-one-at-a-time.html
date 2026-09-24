@@ -2,8 +2,8 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>По одному делу за раз — Whoopy</title>
 <meta name="description" content="Владельцы уже не спрашивают, может ли ИИ. Они спрашивают, доделаем ли мы. Вот как мы на это отвечаем.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +15,8 @@
      источников не было, а тут три цифры стоят на чужих словах. Форма
      сноски самая тихая из возможных: мелкий серый текст под линией,
      номера — те же, что верхними индексами в тексте. -->
-<link rel="stylesheet" href="page.css">
+<link rel="stylesheet" href="page.css?v=2409">
+<link rel="stylesheet" href="think.css?v=2409">
 <style>
 .page sup{font-size:.62em;line-height:0;vertical-align:super}
 .page sup a{color:var(--grey);text-decoration:none}
@@ -36,11 +37,15 @@
   </div>
 </div>
 
+<div class="progress" aria-hidden="true"></div>
+
 <article class="page tone-violet">
+  <div class="ahero" aria-hidden="true"><canvas data-shape="steps"></canvas><div class="grid-bg"></div></div>
   <div class="kind">Что думаем</div>
   <h1>По одному делу за&nbsp;раз</h1>
+  <div class="read"><span>как мы работаем</span><span>3 минуты</span></div>
 
-  <p>«Про ИИ слышу со&nbsp;всех сторон. А&nbsp;с&nbsp;чего начать в&nbsp;моём деле&nbsp;— непонятно». Так владельцы чаще всего объясняют, почему до&nbsp;сих пор не&nbsp;начали. Другой вопрос звучит, когда они уже что-то пробовали&nbsp;— задавали вопросы ChatGPT, видели рекламу ботов, кто-то даже купил одного: «А&nbsp;вы доделаете?»</p>
+  <p class="first">«Про ИИ слышу со&nbsp;всех сторон. А&nbsp;с&nbsp;чего начать в&nbsp;моём деле&nbsp;— непонятно». Так владельцы чаще всего объясняют, почему до&nbsp;сих пор не&nbsp;начали. Другой вопрос звучит, когда они уже что-то пробовали&nbsp;— задавали вопросы ChatGPT, видели рекламу ботов, кто-то даже купил одного: «А&nbsp;вы доделаете?»</p>
 
   <p>Страх понятный. Человек отдаёт чужим свои заявки, своих клиентов, свои деньги. Если вещь сломается через месяц, а&nbsp;те, кто её делал, пропадут, разгребать придётся ему самому, посреди рабочего дня.</p>
 
@@ -87,7 +92,17 @@
     <p id="src-3">3. Пониженные страховые взносы с&nbsp;2026 года&nbsp;— ФНС, 14.01.2026: <a href="https://www.nalog.gov.ru/rn44/news/activities_fts/16595033/" target="_blank" rel="noopener">nalog.gov.ru/rn44/news/activities_fts/16595033</a></p>
   </div>
 
+  <nav class="nx">
+    <small>Следующий разбор</small>
+    <a href="think-reason.html">
+      <div class="nx-shot"><canvas data-shape="lock"></canvas><div class="grid-bg"></div></div>
+      <div><b>Запрет живёт дольше причины</b><span>В каждой компании есть «так у нас нельзя», за которым давно ничего нет.</span><em>читать</em></div>
+    </a>
+  </nav>
+
 </article>
 
+<script src="particles.js?v=2409"></script>
+<script src="think.js?v=2409"></script>
 </body>
 </html>

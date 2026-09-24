@@ -24,7 +24,7 @@
      дом, что Onest по духу (ParaType, кириллица спроектирована, а не
      дорисована), один вес, 16 КБ на оба алфавита. -->
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500&family=PT+Mono&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="home.css">
+<link rel="stylesheet" href="home.css?v=2409">
 </head>
 <body>
 
@@ -44,12 +44,12 @@
 <!-- ── Оглавление точками ───────────────────────────────── -->
 <nav class="dots" id="dots">
   <a href="#top" data-t="Начало"></a>
+  <a href="#about" data-t="Что делаем"></a>
   <a href="#made" data-t="Что сделали"></a>
-  <a href="#social" data-t="Где читать"></a>
   <a href="#clients" data-t="Кому сделали"></a>
   <a href="#went" data-t="Куда ходили"></a>
   <a href="#think" data-t="Что думаем"></a>
-  <a href="#about" data-t="Что делаем"></a>
+  <a href="#social" data-t="Где мы"></a>
   <a href="#write" data-t="Написать"></a>
 </nav>
 
@@ -65,6 +65,69 @@
   <p class="lead">Второй мозг — управляющий центр компании: память, задачи, проекты, отделы.</p>
   <div class="scroll-hint"></div>
 </header>
+
+<!-- ── Что делаем · правка Саши 24.09.2026 ─────────────────
+     «Тут точно продукты нужно показать, а может и в самом начале».
+     Раздел поднят сразу под первый экран и показывает сами три вещи
+     карточками, а не вывеску со ссылкой. Слова карточек — из
+     products.html, своих смыслов тут нет. Каждая карточка ведёт на свой
+     якорь страницы продуктов. -->
+<section class="sec about" id="about">
+  <div class="wrap">
+    <div class="head rev">
+      <h2>Что делаем</h2>
+      <span class="sub">три вещи, и&nbsp;вводим их&nbsp;по&nbsp;очереди&nbsp;— начать можно с&nbsp;одной</span>
+    </div>
+    <div class="three">
+      <a class="thing rev" style="--d:.05s" href="products.html#agent">
+        <div class="shot pshot">
+          <div class="grid-bg"></div>
+          <span class="p-num">01</span>
+          <div class="p-agent">
+            <div class="msg them step">Можно записаться на&nbsp;завтра?<em>23:14</em></div>
+            <div class="msg us step">Да, есть 11:00 и&nbsp;15:30<em>23:14</em></div>
+            <div class="msg them step">Давайте 11:00<em>23:15</em></div>
+          </div>
+        </div>
+        <div class="cap">
+          <h3>Агент</h3>
+          <p class="desc">Берёт на&nbsp;себя одно дело и&nbsp;делает его каждый день: отвечает на&nbsp;заявки сразу, в&nbsp;одиннадцать вечера тоже, и&nbsp;доводит до&nbsp;записи.</p>
+          <p class="more">что входит</p>
+        </div>
+      </a>
+      <a class="thing rev" style="--d:.12s" href="products.html#specialist">
+        <div class="shot pshot">
+          <div class="grid-bg"></div>
+          <span class="p-num">02</span>
+          <ul class="p-day">
+            <li class="step"><b>09:00</b><i></i>напоминания на&nbsp;сегодня разосланы</li>
+            <li class="step"><b>11:40</b><i></i>запись перенесена, клиент предупреждён</li>
+            <li class="step"><b>14:15</b><i></i>ответ на&nbsp;вопрос о&nbsp;цене</li>
+            <li class="step"><b>18:00</b><i></i>график смен на&nbsp;неделю собран</li>
+          </ul>
+        </div>
+        <div class="cap">
+          <h3>ИИ-специалист</h3>
+          <p class="desc">Встаёт на&nbsp;место сотрудника и&nbsp;ведёт его участок целиком: записи, переносы, напоминания, график смен. Не&nbsp;уходит в&nbsp;отпуск и&nbsp;не&nbsp;увольняется.</p>
+          <p class="more">что входит</p>
+        </div>
+      </a>
+      <a class="thing soon rev" style="--d:.19s" href="products.html#brain">
+        <div class="shot pshot">
+          <canvas data-shape="net"></canvas>
+          <div class="grid-bg"></div>
+          <span class="p-num">03</span>
+          <span class="p-tag">скоро</span>
+        </div>
+        <div class="cap">
+          <h3>Второй мозг</h3>
+          <p class="desc">Управляющий центр компании: план недели, задачи людям, сроки. Работает у&nbsp;нас в&nbsp;Whoopy каждый день&nbsp;— для других компаний готовим.</p>
+          <p class="more">что входит</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
 
 <!-- ── Что сделали · Boofy ──────────────────────────────── -->
 <section class="sec made" id="made">
@@ -83,21 +146,21 @@
         <div class="shot big">
           <div class="grid-bg"></div>
           <div class="dia">
-            <div class="d-core">Главный бот<span>ведёт компанию целиком: план, деньги, задачи остальным</span><em class="mem dark">44 файла своей памяти</em></div>
+            <div class="d-core"><b class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8" stroke-dasharray="3 3"/></svg></b>Главный бот<span>ведёт компанию целиком: план, деньги, задачи остальным</span><span class="d-now" data-lines="ставит маркетингу задачу: ролик на завтра#0|собирает план недели из задач отделов#-1|автоматизации: проверить бота приёма заказов#1|маркетингу: новая статья в «Что думаем»#0|записывает итог дня в память компании#-1">собирает план недели из задач отделов</span><em class="mem dark">44 файла своей памяти</em></div>
             <div class="d-fork"></div>
             <div class="d-row">
               <!-- было «тексты, соцсети, эта страница» — последняя отсылка
                    страницы к самой себе. Приём сильный, но правило Саши от
                    03.08 общее, и он снял такую же фразу с первого экрана -->
-              <div class="d-c on">Маркетинг<u>тексты, соцсети, сайт</u><em class="mem">88 файлов памяти</em><i>работает</i></div>
-              <div class="d-c on">Автоматизация<u>боты и связки между системами</u><em class="mem">45 файлов памяти</em><i>работает</i></div>
+              <div class="d-c on"><b class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a1 1 0 0 0 1 1h3l6 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M17 9a4 4 0 0 1 0 6"/></svg></b>Маркетинг<u>тексты, соцсети, сайт</u><em class="mem">88 файлов памяти</em><i>работает</i></div>
+              <div class="d-c on"><b class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></b>Автоматизация<u>боты и связки между системами</u><em class="mem">45 файлов памяти</em><i>работает</i></div>
               <!-- Было «спеца пока нет» — и это дважды лишнее: состояние уже
                    сказано двумя другими метками той же ячейки (0 файлов и
                    «каркас»), а слово «пока» превращало метку в оправдание.
                    Теперь строка описывает ЗОНУ отдела, как у работающих
                    соседей, а пустоту показывают число и метка. -->
-              <div class="d-c off">Бухгалтерия<u>деньги и отчётность</u><em class="mem">0 файлов памяти</em><i>каркас</i></div>
-              <div class="d-c off">Юридический<u>договоры и риски</u><em class="mem">0 файлов памяти</em><i>каркас</i></div>
+              <div class="d-c off"><b class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M12 12h2M16 12h0M8 16h2M12 16h2"/></svg></b>Бухгалтерия<u>деньги и отчётность</u><em class="mem">0 файлов памяти</em><i>каркас</i></div>
+              <div class="d-c off"><b class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M7 21h10M5 7h14M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z"/></svg></b>Юридический<u>договоры и риски</u><em class="mem">0 файлов памяти</em><i>каркас</i></div>
             </div>
             <!-- Блок .d-out с Пудрой снят 05.08.2026 по аудиту Саши — «надпись
                  про пудру точно лишняя». Схема отвечает на один вопрос: как
@@ -146,151 +209,7 @@
   </div>
 </section>
 
-<!-- ── Мы в соцсетях · Lumi ─────────────────────────────── -->
-<!-- ⚠️ Саша: здесь стоят макеты каналов, а не снимки. Настоящие скриншоты
-     встанут на это место, когда каналы оживут — под них уже готово. -->
-<section class="sec social" id="social">
-  <div class="wrap">
-    <div class="head rev">
-      <!-- подзаголовок снят: «четыре площадки, у каждой своя работа» —
-           ровно то, что и так видно по четырём карточкам ниже.
-           Заголовок был «Где нас можно будет читать» — будущее время прямо
-           перед разделом с клиентами читалось как признание, что нас нигде
-           нет. «Где мы» — то, как хозяин сам назвал этот блок -->
-      <h2>Где мы</h2>
-    </div>
 
-    <div class="four">
-
-      <div class="thing rev" style="--d:.05s">
-        <div class="shot">
-          <div class="grid-bg"></div>
-          <div class="chan">
-            <div class="chan-top">
-              <span class="chan-ava">
-                <svg viewBox="0 0 32 32" aria-hidden="true">
-                  <path d="M4 16l24-9-4 22-8-6-4 5-1-8z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
-                </svg>
-              </span>
-              <span class="chan-name">Telegram</span>
-            </div>
-            <div class="chan-body">
-              <ul class="plan">
-                <li>хроника работы по факту — включая то, что сломалось</li>
-              </ul>
-            </div>
-            <div class="chan-state">Главный канал<em>основная площадка</em></div>
-          </div>
-        </div>
-        <!-- Дата под названием снята: хозяин сказал, что тут в будущем
-             встанет число подписчиков, а пока подпись — просто заголовок -->
-        <div class="cap">
-          <h3>Канал компании</h3>
-        </div>
-      </div>
-
-      <div class="thing rev" style="--d:.12s">
-        <div class="shot">
-          <div class="grid-bg"></div>
-          <div class="chan">
-            <div class="chan-top">
-              <span class="chan-ava">
-                <svg viewBox="0 0 32 32" aria-hidden="true">
-                  <rect x="3" y="7" width="26" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2.2"/>
-                  <path d="M14 12l7 4-7 4z" fill="currentColor"/>
-                </svg>
-              </span>
-              <span class="chan-name">YouTube</span>
-            </div>
-            <div class="chan-body">
-              <ul class="plan">
-                <li>как собирается мозг — целиком, без склеек «и вот готово»</li>
-              </ul>
-            </div>
-            <div class="chan-state">Длинное<em>первый ролик — про Пудру</em></div>
-          </div>
-        </div>
-        <div class="cap">
-          <h3>Разборы целиком</h3>
-        </div>
-      </div>
-
-      <div class="thing rev" style="--d:.19s">
-        <div class="shot">
-          <div class="grid-bg"></div>
-          <div class="chan">
-            <div class="chan-top">
-              <span class="chan-ava">
-                <svg viewBox="0 0 32 32" aria-hidden="true">
-                  <rect x="5" y="5" width="22" height="22" rx="7" fill="none" stroke="currentColor" stroke-width="2.2"/>
-                  <circle cx="16" cy="16" r="5.6" fill="none" stroke="currentColor" stroke-width="2.2"/>
-                  <circle cx="23" cy="9" r="1.6" fill="currentColor"/>
-                </svg>
-              </span>
-              <span class="chan-name">Instagram</span>
-            </div>
-            <div class="chan-body">
-              <ul class="plan">
-                <li>короткое, живое — без длинных разборов</li>
-              </ul>
-            </div>
-            <!-- Была одна карточка на профиль Саши — хозяин сказал, что
-                 будет ещё инстаграм самой компании. Пятую карточку не
-                 заводим: сетка .four держит ровно четыре, и этот раздел мы
-                 только что ужимали, чтобы влезал в экран целиком. Вместо
-                 этого одна площадка показывает оба профиля: Саша уже в
-                 работе (сплошная строка), у компании профиля ещё нет —
-                 это сказано пунктиром снизу, тем же языком, что у карточек
-                 с пометкой .pending, без единого слова оправдания -->
-            <div class="chan-state ig">
-              <div class="ig-row"><b>Саша</b><em>оформляем прямо сейчас</em></div>
-              <div class="ig-row ig-pending"><b>Whoopy</b></div>
-            </div>
-          </div>
-        </div>
-        <!-- Было «Instagram» — но само слово уже стоит в шапке карточки
-             (.chan-name), подпись под картинкой его просто повторяла. У
-             соседей подпись говорит, ЧТО там, а не на какой площадке
-             («Разборы целиком», «Канал в Max»). Первая попытка — «Короткое —
-             Саша и компания» — оказалась длиннее соседних подписей и на
-             1180px (четыре карточки в ряд) переносилась на вторую строку,
-             карточка вываливалась из ряда по нижнему краю (проверила
-             iframe-замером на 1180/1000/900/700/640px). Профили и так
-             названы внутри самой карточки («Саша», «Whoopy») — подписи
-             незачем их повторять, хватает типа контента -->
-        <div class="cap">
-          <h3>Короткое и живое</h3>
-        </div>
-      </div>
-
-      <div class="thing rev" style="--d:.26s">
-        <div class="shot">
-          <div class="grid-bg"></div>
-          <div class="chan">
-            <div class="chan-top">
-              <span class="chan-ava">
-                <svg viewBox="0 0 32 32" aria-hidden="true">
-                  <path d="M5 24V11.5c0-2.4 2.9-3.4 4.4-1.6L16 18l6.6-8.1c1.5-1.8 4.4-.8 4.4 1.6V24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-              <span class="chan-name">Max</span>
-            </div>
-            <div class="chan-body">
-              <ul class="plan">
-                <li>то же, что в Telegram — там, где сидят наши клиенты</li>
-              </ul>
-            </div>
-            <div class="chan-state">Присутствие<em>следом за Telegram</em></div>
-          </div>
-        </div>
-        <div class="cap">
-          <h3>Канал в Max</h3>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
 
 <!-- ── Кому сделали · Lumi ──────────────────────────────── -->
 <section class="sec clients" id="clients">
@@ -315,7 +234,8 @@
                в 16/10 при такой ширине помещаются три реплики по две строки,
                четвёртая уже вылезает. Переписка целиком — на pudra.html,
                куда карточка и ведёт -->
-          <div class="chat">
+          <span class="live-tag">работает · Пудра</span>
+          <div class="chat" data-lines="<Здравствуйте! Хочу торт на субботу|>На сколько человек и какая начинка?|<Человек на десять, шоколадный|>Записала. Заберёте сами или привезти?|<Привезите на Пресню|>Курьером в субботу — 490 ₽. К оплате 4 890 ₽, отправляю QR.|<Оплатила|>Вижу оплату. Заказ уже у кондитера">
             <div class="msg them">Здравствуйте! Хочу торт на субботу</div>
             <div class="msg us">На сколько человек и какая начинка?</div>
             <div class="msg them">Человек на десять, шоколадный</div>
@@ -341,6 +261,7 @@
       <a class="thing rev" style="--d:.15s" href="shifts.html">
         <div class="shot big">
           <div class="grid-bg"></div>
+          <span class="live-tag">работает · смены</span>
           <div class="shift">
             <div class="sh-row sh-head">
               <b></b>
@@ -376,7 +297,8 @@
           <div class="grid-bg"></div>
           <!-- Три реплики из пяти и короче, чем на внутренней странице, — по той
                же мерке, что у соседней карточки. Целиком — на hiring.html -->
-          <div class="chat">
+          <span class="live-tag">работает · найм</span>
+          <div class="chat" data-lines=">Где работали последний год?|<Бармен, полтора года, кофейня на Никольской|>Что делали в час пик, когда очередь?|<Сначала закрывал тех, кто уже заказал, потом принимал новых|>Понятно. Какие смены вам удобны — дневные или вечерние?">
             <div class="msg us">Где работали последний год?</div>
             <div class="msg them">Бармен, полтора года, кофейня на Никольской</div>
             <div class="msg us">Что делали в час пик, когда очередь?</div>
@@ -423,7 +345,7 @@
   </div>
 </section>
 
-<!-- ── Что думаем · макет 22.09.2026, на живом сайте нет ── -->
+<!-- ── Что думаем · на живом с 24.09.2026 ── -->
 <section class="sec think" id="think">
   <div class="wrap">
     <div class="head rev">
@@ -463,95 +385,112 @@
   </div>
 </section>
 
-<section class="sec about" id="about">
+
+
+<!-- ── Где мы · правка Саши 24.09.2026: «иконки нажимаемые» ──
+     Кликается то, что живёт на самом деле: Instagram @whoopy_ai (ролики
+     каждый день с 24.09) и Telegram — это личка Саши, единственная дверь
+     компании (канал компании отменён 17.08). YouTube и Max своих адресов
+     пока не имеют — стоят пунктиром «скоро», без ссылки: ссылка в никуда
+     хуже её отсутствия. Раздел переехал вниз, к двери: «где нас читать»
+     спрашивают после того, как поняли, кто мы. -->
+<section class="sec social" id="social">
   <div class="wrap">
-    <div class="about-in rev">
-      <!-- Раздел пересобран 03.08.2026. Было: заголовок в четыре слова и три
-           абзаца по центру — Саша сказал «немного нелепо выглядит, нужно
-           кое-что новое; например "что делаем", и как вывеска».
-           Теперь он и построен как вывеска: мелкая метка сверху, крупная
-           строка предложения, и только под ней — объяснение. -->
-      <!-- Абзац под вывеской правился ещё раз: в нём было ДВЕ разные вещи —
-           что мы делаем (перечислением «память, отделы, задачи,
-           ИИ-специалистов») и для кого это. Перечисление снято — оно же
-           дублирует две карточки продукта ниже; осталась одна строка про
-           клиента. -->
-      <h2>Что делаем</h2>
-      <p class="signboard">Собираем второй мозг<br>под вашу компанию</p>
-      <!-- 05.08.2026, аудит Саши: «в тему ли тут надпись?» Была «Для тех, у кого
-           дела держатся на голове владельца — и рассыпаются, стоит ему
-           отвлечься». Вывеска над ней зовёт вперёд, а строка тянула назад в
-           неприятное — и говорила про боль, а не про вещь. Новая формулировка —
-           слово самого Саши из аудита: мозг «закрыл направления, в которых мы не
-           понимаем». Она же не дублирует карточки продуктов ниже. -->
-      <p class="lead">Закрывает направления, в&nbsp;которых владелец не&nbsp;разбирается или до&nbsp;которых не&nbsp;доходят руки.</p>
+    <div class="head rev">
+      <h2>Где мы</h2>
     </div>
-
-    <!-- Раздел был чистым текстом — вывеска и три абзаца. Саша: «тут можно
-         сделать такими же иконками, чтобы можно было посмотреть, что делаем».
-         Правка не косметическая, она чинит перекос: три раздела подряд
-         показывали ВЕЩИ, и только последний — тот самый, где человек решает,
-         покупать ли, — переходил на слова. Теперь предложение показано теми же
-         карточками, что и всё остальное, и каждая открывается страницей.
-         Цен на карточках нет намеренно: по нашему методу мозг продаётся как
-         сотрудничество, а не коробка, и сами выбираем, с кем работать.
-         Прайс на витрине этому противоречит — он ставит нас в ряд, где
-         сравнивают по числу. Число называется в разговоре. -->
-    <div class="two">
-
-      <a class="thing rev" style="--d:.05s" href="product-brain.html">
+    <div class="four">
+      <a class="thing rev" style="--d:.05s" href="https://www.instagram.com/whoopy_ai/" target="_blank" rel="noopener">
         <div class="shot">
           <div class="grid-bg"></div>
-          <div class="blueprint">
-            <svg viewBox="0 0 200 120" aria-hidden="true">
-              <rect x="62" y="10" width="76" height="26" rx="7"/>
-              <path d="M100 36v14M40 50h120M40 50v10M80 50v10M120 50v10M160 50v10"/>
-              <rect x="26" y="60" width="28" height="24" rx="5"/>
-              <rect x="66" y="60" width="28" height="24" rx="5"/>
-              <rect x="106" y="60" width="28" height="24" rx="5"/>
-              <rect x="146" y="60" width="28" height="24" rx="5"/>
-              <path d="M40 84v12M80 84v12M120 84v12M160 84v12" stroke-dasharray="3 4" opacity=".6"/>
-            </svg>
+          <div class="chan">
+            <div class="chan-top">
+              <span class="chan-ava"><svg viewBox="0 0 32 32" aria-hidden="true">
+                  <rect x="5" y="5" width="22" height="22" rx="7" fill="none" stroke="currentColor" stroke-width="2.2"/>
+                  <circle cx="16" cy="16" r="5.6" fill="none" stroke="currentColor" stroke-width="2.2"/>
+                  <circle cx="23" cy="9" r="1.6" fill="currentColor"/>
+                </svg></span>
+              <span class="chan-name">Instagram</span>
+            </div>
+            <div class="chan-body">
+              <ul class="plan">
+                <li>ролики каждый день — короткое и живое</li>
+              </ul>
+            </div>
+            <div class="chan-state">@whoopy_ai<em>новый ролик каждый день</em></div>
           </div>
-          <div class="state-big">Внутрь компании<em>планирование, финансы, реклама, задачи</em></div>
         </div>
         <div class="cap">
-          <h3>Второй мозг</h3>
-          <p class="desc">Управляющий центр с отделами и памятью. Владелец продолжает делать то, в&nbsp;чём он лучший, — остальное ведёт мозг.</p>
-          <p class="more">что входит</p>
+          <h3>Короткое и живое</h3>
         </div>
       </a>
-
-      <a class="thing rev" style="--d:.15s" href="product-specialist.html">
+      <a class="thing rev" style="--d:.12s" href="https://t.me/mr_nobode" target="_blank" rel="noopener">
         <div class="shot">
           <div class="grid-bg"></div>
-          <div class="blueprint">
-            <!-- Слева отдел (прямоугольник), справа человек — это и есть две
-                 стороны, куда специалист поворачивается. Под ним три полосы:
-                 его память слоями, то единственное, чем он отличается от чата
-                 с промптом. Первая версия была симметричной — два одинаковых
-                 кружка по бокам, — и не говорила ничего: одинаковые фигуры
-                 читаются как украшение, а не как «внутрь и наружу». -->
-            <svg viewBox="0 0 200 120" aria-hidden="true">
-              <rect x="76" y="18" width="48" height="34" rx="8"/>
-              <path d="M88 30h24M88 40h16"/>
-              <path d="M82 62h36M86 71h28M90 80h20" opacity=".55"/>
-              <path d="M76 35H50" stroke-dasharray="3 4"/>
-              <rect x="16" y="24" width="30" height="22" rx="5"/>
-              <path d="M124 35h26" stroke-dasharray="3 4"/>
-              <circle cx="168" cy="28" r="7"/>
-              <path d="M157 48c1.5-6.5 5.5-10 11-10s9.5 3.5 11 10"/>
-            </svg>
+          <div class="chan">
+            <div class="chan-top">
+              <span class="chan-ava"><svg viewBox="0 0 32 32" aria-hidden="true">
+                  <path d="M4 16l24-9-4 22-8-6-4 5-1-8z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                </svg></span>
+              <span class="chan-name">Telegram</span>
+            </div>
+            <div class="chan-body">
+              <ul class="plan">
+                <li>пишите Саше напрямую — отвечает сам, без менеджеров</li>
+              </ul>
+            </div>
+            <div class="chan-state">Саша<em>@mr_nobode</em></div>
           </div>
-          <div class="state-big">Наружу и внутрь<em>ведёт отдел или говорит с вашими клиентами</em></div>
         </div>
         <div class="cap">
-          <h3>ИИ-специалист</h3>
-          <p class="desc">Сотрудник со своей памятью и своей зоной. Внутри такие ведут отделы, снаружи — принимают заказы, как Пудра в&nbsp;кондитерской.</p>
-          <p class="more">что входит</p>
+          <h3>Написать напрямую</h3>
         </div>
       </a>
-
+      <div class="thing rev pending" style="--d:.19s">
+        <div class="shot">
+          <div class="grid-bg"></div>
+          <div class="chan">
+            <div class="chan-top">
+              <span class="chan-ava"><svg viewBox="0 0 32 32" aria-hidden="true">
+                  <rect x="3" y="7" width="26" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2.2"/>
+                  <path d="M14 12l7 4-7 4z" fill="currentColor"/>
+                </svg></span>
+              <span class="chan-name">YouTube</span>
+            </div>
+            <div class="chan-body">
+              <ul class="plan">
+                <li>как собирается мозг — целиком, без склеек «и вот готово»</li>
+              </ul>
+            </div>
+            <div class="chan-state">Скоро<em>первый ролик — про Пудру</em></div>
+          </div>
+        </div>
+        <div class="cap">
+          <h3>Разборы целиком</h3>
+        </div>
+      </div>
+      <div class="thing rev pending" style="--d:.26s">
+        <div class="shot">
+          <div class="grid-bg"></div>
+          <div class="chan">
+            <div class="chan-top">
+              <span class="chan-ava"><svg viewBox="0 0 32 32" aria-hidden="true">
+                  <path d="M5 24V11.5c0-2.4 2.9-3.4 4.4-1.6L16 18l6.6-8.1c1.5-1.8 4.4-.8 4.4 1.6V24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg></span>
+              <span class="chan-name">Max</span>
+            </div>
+            <div class="chan-body">
+              <ul class="plan">
+                <li>то же, что в Instagram — там, где сидят наши клиенты</li>
+              </ul>
+            </div>
+            <div class="chan-state">Скоро<em>следом за Instagram</em></div>
+          </div>
+        </div>
+        <div class="cap">
+          <h3>Канал в Max</h3>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -571,6 +510,7 @@
   </div>
 </footer>
 
-<script src="home.js"></script>
+<script src="home.js?v=2409"></script>
+<script src="particles.js?v=2409"></script>
 </body>
 </html>
